@@ -1,518 +1,1382 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AURA">
-<meta name="theme-color" content="#0a0a0f">
-<title>AURA ✨</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{--neon:#00d4ff;--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;--border:#2a2a3a;--text:#e8e8f0;--text2:#8888aa;--red:#ff4444}
-html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;font-size:14px}
-#app{height:100vh;height:100dvh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
-.screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 16px 90px;display:none}
-.screen.active{display:block}
-.bottom-bar{display:flex;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0px);min-height:60px;z-index:10}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:10px;color:var(--text2);background:none;border:none;padding:8px 0;min-width:0;transition:color .2s}
-.tab.active{color:var(--neon)}
-.tab-icon{font-size:20px;line-height:1}
-#onboarding{flex:1;display:flex;flex-direction:column;overflow-y:auto;background:var(--bg)}
-.onb-step{display:none;flex-direction:column;gap:18px;padding:40px 24px 32px;animation:fadeIn .35s}
-.onb-step.active{display:flex}
-@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.onb-emoji{font-size:56px;text-align:center}
-.onb-title{font-size:24px;font-weight:700;text-align:center}
-.onb-desc{color:var(--text2);text-align:center;line-height:1.7;font-size:14px}
-.btn-primary{background:var(--neon);color:#000;border:none;padding:14px 24px;border-radius:14px;font-weight:700;cursor:pointer;font-size:15px;width:100%}
-.btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border);padding:12px 24px;border-radius:14px;cursor:pointer;font-size:14px;width:100%}
-label{color:var(--text2);font-size:12px;margin-bottom:4px;display:block}
-.input-field{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:12px 14px;border-radius:12px;font-size:15px;width:100%;outline:none;-webkit-appearance:none;appearance:none}
-.input-field:focus{border-color:var(--neon)}
-select.input-field{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%238888aa' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
-select.input-field option{background:#1a1a26}
-textarea.input-field{min-height:180px;resize:none;line-height:1.7;padding:14px}
-.contract-box{background:var(--bg3);border:1px solid var(--neon);border-radius:14px;padding:18px;font-size:13px;color:var(--text2);line-height:1.8}
-.contract-box strong{color:var(--neon)}
-.aura-header{background:var(--bg2);border-radius:16px;padding:16px;margin-bottom:14px;border:1px solid var(--border)}
-.aura-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.aura-title{font-size:13px;color:var(--text2)}
-.level-badge{background:var(--neon);color:#000;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
-.aura-bar-bg{background:var(--bg);border-radius:20px;height:8px}
-.aura-bar-fill{background:var(--neon);height:8px;border-radius:20px;transition:width .6s}
-.aura-points{font-size:11px;color:var(--text2);margin-top:5px;text-align:right}
-.week-nav{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.week-strip{display:flex;gap:6px;flex:1;overflow-x:auto;padding-bottom:2px;-ms-overflow-style:none;scrollbar-width:none}
-.week-strip::-webkit-scrollbar{display:none}
-.day-chip{min-width:44px;padding:8px 4px;border-radius:12px;text-align:center;cursor:pointer;border:1px solid var(--border);background:var(--bg2);flex-shrink:0;transition:all .15s}
-.day-chip.today{border-color:rgba(0,212,255,.45)}
-.day-chip.selected{background:var(--neon);border-color:var(--neon)}
-.day-chip .dname{font-size:9px;color:var(--text2)}
-.day-chip.selected .dname,.day-chip.selected .dnum{color:#000}
-.day-chip .dnum{font-size:15px;font-weight:600}
-.cal-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text2);width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0}
-.section-title{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
-.task-item{background:var(--bg2);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--border);transition:opacity .3s}
-.task-item.done{opacity:.4}
-.task-item.migrated{opacity:.55;border-style:dashed;border-color:#ffc80055}
-.bujo-group{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
-.bsym{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-weight:700;background:var(--bg3);color:var(--text2);font-family:monospace;transition:all .15s;user-select:none}
-.bsym.s-done{background:rgba(0,212,255,.15);border-color:var(--neon);color:var(--neon)}
-.bsym.s-migrated{background:rgba(255,200,0,.1);border-color:#ffc800;color:#ffc800}
-.bsym.s-note{background:rgba(136,136,170,.15);border-color:var(--text2);color:var(--text2)}
-.task-info{flex:1;min-width:0}
-.task-name{font-size:14px;line-height:1.4}
-.task-item.done .task-name{text-decoration:line-through}
-.task-meta{font-size:11px;color:var(--text2);margin-top:3px}
-.task-aura{font-size:11px;color:var(--neon);margin-top:2px}
-.bujo-legend{background:var(--bg3);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--text2);display:flex;flex-wrap:wrap;gap:8px 16px}
-.li{display:flex;align-items:center;gap:5px}
-.ls{font-family:monospace;font-weight:700;font-size:12px}
-.aura-flash{position:fixed;top:35%;left:50%;transform:translate(-50%,-50%);background:rgba(0,212,255,.12);border:1px solid var(--neon);color:var(--neon);padding:10px 24px;border-radius:24px;font-weight:700;font-size:20px;pointer-events:none;animation:fl 1s forwards;z-index:9999}
-@keyframes fl{0%{opacity:1;transform:translate(-50%,-60%)}100%{opacity:0;transform:translate(-50%,-130%)}}
-.fab{position:fixed;bottom:74px;right:16px;width:52px;height:52px;border-radius:50%;background:var(--neon);color:#000;font-size:28px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 20px rgba(0,212,255,.35);z-index:50}
-.cat-card{background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
-.cat-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.cat-hdr-l{display:flex;align-items:center;gap:8px}
-.cat-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
-.habit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;gap:8px}
-.habit-row:last-child{border-bottom:none}
-.hbadge{font-size:10px;color:var(--text2);background:var(--bg);padding:3px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0}
-.btn-del{background:rgba(255,68,68,.1);color:var(--red);border:1px solid rgba(255,68,68,.25);padding:4px 8px;border-radius:8px;cursor:pointer;font-size:11px;flex-shrink:0}
-.diary-hint{background:var(--bg3);border-radius:12px;padding:14px;font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:14px;border-left:3px solid var(--neon)}
-.save-btn{background:var(--neon);color:#000;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:12px;font-size:14px;width:100%}
-.overlay{position:fixed;inset:0;background:rgba(0,0,5,.97);z-index:200;display:none;flex-direction:column;padding:24px 20px;gap:14px;overflow-y:auto;max-width:480px;margin:0 auto}
-.overlay.open{display:flex}
-.night-title{font-size:22px;font-weight:700;color:var(--neon);text-align:center}
-.vice-item{background:var(--bg2);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border)}
-.v-left{display:flex;flex-direction:column;gap:3px}
-.toggle{width:46px;height:26px;border-radius:13px;background:var(--border);border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
-.toggle.on{background:var(--neon)}
-.toggle::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s}
-.toggle.on::after{left:23px}
-.cal-modal{position:fixed;inset:0;background:rgba(0,0,5,.92);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;max-width:480px;margin:0 auto}
-.cal-modal.open{display:flex}
-.cal-inner{background:var(--bg2);border-radius:18px;padding:20px;width:100%;border:1px solid var(--border)}
-.cal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.cal-nav{background:var(--bg3);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.cdname{text-align:center;font-size:10px;color:var(--text2);padding:4px 0}
-.cday{text-align:center;padding:8px 2px;border-radius:8px;cursor:pointer;font-size:13px;border:1px solid transparent}
-.cday:hover:not(.empty){background:var(--bg3)}
-.cday.ctoday{border-color:rgba(0,212,255,.4)}
-.cday.csel{background:var(--neon);color:#000;font-weight:700}
-.cday.empty{cursor:default;opacity:0}
-.create-modal{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;max-width:480px;margin:0 auto}
-.create-modal.open{display:flex}
-.cmi{padding:20px;display:flex;flex-direction:column;gap:14px;padding-bottom:50px}
-.mhdr{display:flex;justify-content:space-between;align-items:center}
-.close-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
-.freq-grid{display:flex;flex-wrap:wrap;gap:7px}
-.fchip{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;transition:all .2s}
-.fchip.sel{background:rgba(0,212,255,.12);border-color:var(--neon);color:var(--neon)}
-.color-grid{display:flex;gap:10px;flex-wrap:wrap}
-.cdot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s}
-.cdot.sel{border-color:#fff;transform:scale(1.15)}
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:60px 20px;color:var(--text2);text-align:center}
-.notif-bar{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:12px}
-.notif-bar button{background:var(--neon);color:#000;border:none;padding:6px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;white-space:nowrap;flex-shrink:0}
-hr.div{border:none;border-top:1px solid var(--border);margin:4px 0}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Projeto Aura - Organização Offline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Tema Dark Neon */
+        :root {
+            --primary: #00f3ff;
+            --secondary: #ff00ff;
+            --accent: #00ff9d;
+            --red: #ff3366;
+            --amber: #ffaa00;
+            --purple: #8b5cf6;
+            --gold: #ffd700;
+            --danger: #ff2d55;
+            --success: #34c759;
+        }
+
+        /* Header Principal */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 15px 20px;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        .aura-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .aura-icon {
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        /* Barra de Aura */
+        .aura-bar-container {
+            width: 120px;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+
+        .aura-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .aura-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .aura-level {
+            font-size: 12px;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* Área Principal */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+
+        /* Cards */
+        .card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Calendário Horizontal */
+        .calendar-horizontal {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) #333;
+        }
+
+        .calendar-horizontal::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .calendar-horizontal::-webkit-scrollbar-track {
+            background: #333;
+            border-radius: 2px;
+        }
+
+        .calendar-horizontal::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .day-item {
+            min-width: 70px;
+            padding: 12px 8px;
+            background: #2a2a3e;
+            border: 2px solid #333;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .day-item:hover {
+            border-color: var(--purple);
+            transform: translateY(-2px);
+        }
+
+        .day-item.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #00f3ff22, #00ff9d22);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .day-item.today {
+            border-color: var(--gold);
+        }
+
+        .day-name {
+            font-size: 11px;
+            color: #aaa;
+            margin-bottom: 4px;
+        }
+
+        .day-number {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .aura-points {
+            font-size: 10px;
+            color: var(--green);
+            margin-top: 4px;
+        }
+
+        /* Botão Global */
+        .btn-global {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--purple), var(--secondary));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-global:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Lista de Tarefas */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .task-item {
+            background: #2a2a3e;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .task-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .task-item.completed {
+            border-color: var(--success);
+            opacity: 0.7;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .task-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .task-checkbox.checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .task-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .task-emoji {
+            font-size: 24px;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-text {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .task-meta {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .task-aura-reward {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--green);
+            font-weight: bold;
+        }
+
+        .task-priority {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .priority-high {
+            background: linear-gradient(135deg, var(--red), #ff6b8a);
+            color: white;
+        }
+
+        .priority-medium {
+            background: linear-gradient(135deg, var(--amber), #ffc857);
+            color: #333;
+        }
+
+        .priority-low {
+            background: linear-gradient(135deg, var(--success), #69db7c);
+            color: white;
+        }
+
+        /* Barra de Navegação */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-top: 2px solid var(--primary);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            color: #888;
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+        }
+
+        /* Onboarding Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #ccc;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #2a2a3e;
+            border: 2px solid #333;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .btn-purple {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--purple), var(--secondary));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-purple:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Animations */
+        .aura-animation {
+            animation: auraUp 0.8s ease;
+        }
+
+        @keyframes auraUp {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hide sections */
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(52, 199, 89, 0.4);
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.5s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Check-in Noturno */
+        .night-checkin {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .night-card {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-top: 50px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid var(--red);
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .vice-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #2a2a3e;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .toggle {
+            width: 50px;
+            height: 26px;
+            background: #444;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle.on {
+            background: var(--danger);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle.on::after {
+            left: 26px;
+        }
+
+        /* Textarea Diário */
+        .diary-textarea {
+            width: 100%;
+            height: 150px;
+            background: #2a2a3e;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            font-size: 14px;
+            resize: none;
+            transition: all 0.3s ease;
+        }
+
+        .diary-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Category Badge */
+        .category-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<div id="app">
-  <div id="onboarding">
-    <div class="onb-step active" id="step0">
-      <div class="onb-emoji">✨</div>
-      <div class="onb-title">Bem-vindo ao AURA</div>
-      <div class="onb-desc">Seu companheiro de organização de vida.<br>Construa hábitos, ganhe Aura, evolua como pessoa.</div>
-      <button class="btn-primary" onclick="nextStep()">Começar jornada →</button>
-    </div>
-    <div class="onb-step" id="step1">
-      <div class="onb-emoji">🕐</div>
-      <div class="onb-title">Ciclo circadiano</div>
-      <div class="onb-desc">Quando você acorda e dorme? Usaremos isso para alarmes e check-ins noturnos.</div>
-      <div><label>Horário de acordar</label><input class="input-field" type="time" id="wakeTime" value="06:30"></div>
-      <div><label>Horário de dormir</label><input class="input-field" type="time" id="sleepTime" value="23:00"></div>
-      <button class="btn-primary" onclick="nextStep()">Continuar →</button>
-    </div>
-    <div class="onb-step" id="step2">
-      <div class="onb-emoji">🔔</div>
-      <div class="onb-title">Notificações</div>
-      <div class="onb-desc">Quer receber alarme de despertar e lembrete de check-in noturno?<br><br>O app enviará uma notificação no horário que você definiu.</div>
-      <button class="btn-primary" onclick="reqNotif()">Ativar notificações</button>
-      <button class="btn-secondary" onclick="nextStep()">Agora não</button>
-    </div>
-    <div class="onb-step" id="step3">
-      <div class="onb-emoji">⚡</div>
-      <div class="onb-title">Sistema de Aura</div>
-      <div class="onb-desc"><span style="color:var(--neon);font-weight:600">+Aura</span> ao completar tarefas e manter hábitos.<br><br><span style="color:var(--red);font-weight:600">−Aura</span> ao ceder a vícios ou falhar compromissos.<br><br>Suba de nível. Evolua de verdade.</div>
-      <button class="btn-primary" onclick="nextStep()">Entendido! →</button>
-    </div>
-    <div class="onb-step" id="step4">
-      <div class="onb-emoji">🤝</div>
-      <div class="onb-title">Contrato de Honestidade</div>
-      <div class="contract-box">Eu, ao usar o AURA, comprometo-me a ser <strong>honesto comigo mesmo</strong>.<br><br>Sei que ao mentir no check-in noturno, <strong>só estarei me enganando</strong>. O app não me pune — mas minha evolução real depende de dados reais.<br><br>A Aura que construir aqui <strong>reflete quem eu realmente sou</strong>.</div>
-      <button class="btn-primary" onclick="finishOnb()">Assinar e entrar ✨</button>
-    </div>
-  </div>
-
-  <div id="main" style="display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0">
-    <div id="screen-hoje" class="screen active"></div>
-    <div id="screen-habitos" class="screen"></div>
-    <div id="screen-diario" class="screen"></div>
-    <div id="screen-carteira" class="screen"></div>
-    <div id="screen-pessoas" class="screen"></div>
-    <button class="fab" id="fab">+</button>
-    <div class="bottom-bar">
-      <button class="tab active" id="tab-hoje" onclick="switchTab('hoje',this)"><span class="tab-icon">✨</span><span>Hoje</span></button>
-      <button class="tab" id="tab-habitos" onclick="switchTab('habitos',this)"><span class="tab-icon">📊</span><span>Hábitos</span></button>
-      <button class="tab" id="tab-diario" onclick="switchTab('diario',this)"><span class="tab-icon">📖</span><span>Diário</span></button>
-      <button class="tab" id="tab-carteira" onclick="switchTab('carteira',this)"><span class="tab-icon">💰</span><span>Carteira</span></button>
-      <button class="tab" id="tab-pessoas" onclick="switchTab('pessoas',this)"><span class="tab-icon">👥</span><span>Pessoas</span></button>
-    </div>
-  </div>
-
-  <!-- Night modal -->
-  <div class="overlay" id="nightModal">
-    <div class="night-title">🌙 Painel de Sombras</div>
-    <p style="text-align:center;color:var(--text2);font-size:13px">Check-in noturno — seja honesto consigo mesmo</p>
-    <div><label style="margin-bottom:8px">Como foi seu dia?</label><textarea class="input-field" style="min-height:90px" id="nightDiary" placeholder="Escreva brevemente..."></textarea></div>
-    <p style="color:var(--text2);font-size:12px">Você cedeu a algum vício hoje?</p>
-    <div class="vice-item"><div class="v-left"><span>🚬 Fumou hoje?</span><span style="font-size:11px;color:var(--red)">−30 Aura</span></div><button class="toggle" onclick="toggleVice(this,30)"></button></div>
-    <div class="vice-item"><div class="v-left"><span>🍺 Bebeu álcool?</span><span style="font-size:11px;color:var(--red)">−20 Aura</span></div><button class="toggle" onclick="toggleVice(this,20)"></button></div>
-    <div class="vice-item"><div class="v-left"><span>🔞 Se masturbou?</span><span style="font-size:11px;color:var(--red)">−15 Aura</span></div><button class="toggle" onclick="toggleVice(this,15)"></button></div>
-    <button class="btn-primary" onclick="closeNight()">Salvar e dormir bem 🌙</button>
-    <button class="btn-secondary" onclick="document.getElementById('nightModal').classList.remove('open')">Fechar</button>
-  </div>
-
-  <!-- Calendar modal -->
-  <div class="cal-modal" id="calModal">
-    <div class="cal-inner">
-      <div class="cal-hdr"><button class="cal-nav" onclick="calNav(-1)">‹</button><span id="calLabel" style="font-size:16px;font-weight:600"></span><button class="cal-nav" onclick="calNav(1)">›</button></div>
-      <div class="cal-grid" id="calGrid"></div>
-      <button class="btn-secondary" style="margin-top:14px;font-size:13px" onclick="document.getElementById('calModal').classList.remove('open')">Fechar</button>
-    </div>
-  </div>
-
-  <!-- Create modal -->
-  <div class="create-modal" id="createModal">
-    <div class="cmi">
-      <div class="mhdr"><span id="modalTitle" style="font-size:18px;font-weight:700"></span><button class="close-btn" onclick="closeCreate()">×</button></div>
-      <div id="modalContent"></div>
-    </div>
-  </div>
-</div>
-
-<script>
-const COLORS=['#00d4ff','#ff4da6','#7c3aed','#22c55e','#f59e0b','#ef4444','#06b6d4','#f97316'];
-const WD=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-const MN=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-let selColor=COLORS[0];
-let calView=new Date();
-let curTab='hoje';
-
-const DEF={aura:0,level:1,wakeTime:'06:30',sleepTime:'23:00',notif:false,categories:[],taskStates:{},diaryEntries:{},selectedDate:new Date().toDateString(),done:false};
-let S;
-try{const r=localStorage.getItem('aura_v3');S=r?JSON.parse(r):JSON.parse(JSON.stringify(DEF));}
-catch(e){S=JSON.parse(JSON.stringify(DEF));}
-if(!S.categories)S.categories=[];
-if(!S.taskStates)S.taskStates={};
-
-function sv(){try{localStorage.setItem('aura_v3',JSON.stringify(S));}catch(e){}}
-
-// Notifications
-function reqNotif(){
-  if('Notification' in window){
-    Notification.requestPermission().then(p=>{S.notif=(p==='granted');sv();if(p==='granted')startAlarm();});
-  }
-  nextStep();
-}
-let alarmTick=null;
-function startAlarm(){
-  if(alarmTick)clearInterval(alarmTick);
-  alarmTick=setInterval(()=>{
-    if(!S.notif)return;
-    const now=new Date();
-    const hm=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-    const sec=now.getSeconds();
-    if(hm===S.wakeTime&&sec<30)sendNotif('☀️ Bom dia!','Hora de acordar. Seu dia começa agora ⚡');
-    if(hm===S.sleepTime&&sec<30){
-      sendNotif('🌙 Check-in','Abra o Painel de Sombras antes de dormir.');
-      if(document.getElementById('main').style.display!=='none')
-        setTimeout(()=>document.getElementById('nightModal').classList.add('open'),800);
-    }
-  },20000);
-}
-function sendNotif(t,b){if(Notification.permission==='granted')new Notification(t,{body:b});}
-if(S.notif)startAlarm();
-
-// Onboarding
-let onbStep=0;
-function nextStep(){
-  document.getElementById('step'+onbStep).classList.remove('active');
-  onbStep++;
-  if(document.getElementById('step'+onbStep))document.getElementById('step'+onbStep).classList.add('active');
-}
-function finishOnb(){
-  S.wakeTime=document.getElementById('wakeTime')?.value||'06:30';
-  S.sleepTime=document.getElementById('sleepTime')?.value||'23:00';
-  S.done=true;sv();
-  document.getElementById('onboarding').style.display='none';
-  document.getElementById('main').style.display='flex';
-  renderAll();
-  if(S.notif)startAlarm();
-}
-if(S.done){
-  document.getElementById('onboarding').style.display='none';
-  document.getElementById('main').style.display='flex';
-  document.getElementById('fab').onclick=openCreate;
-  renderAll();
-} else {
-  document.getElementById('fab').onclick=openCreate;
-}
-
-// Tabs
-function switchTab(name,el){
-  curTab=name;
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('screen-'+name).classList.add('active');
-  el.classList.add('active');
-  document.getElementById('fab').style.display=(name==='hoje'||name==='habitos')?'flex':'none';
-  if(name==='hoje')renderHoje();
-  else if(name==='habitos')renderHabitos();
-  else if(name==='diario')renderDiario();
-  else renderPlaceholder(name,name==='carteira'?'💰':'👥',name==='carteira'?'Carteira':'Pessoas','Em breve...');
-}
-
-// Level
-function lvlInfo(){
-  const th=[0,100,250,450,700,1000,1400,1900,2500,3200,4000];
-  let lv=1;for(let i=th.length-1;i>=0;i--){if(S.aura>=th[i]){lv=i+1;break;}}
-  lv=Math.min(lv,th.length-1);
-  const c=th[lv-1]||0,n=th[lv]||4000;
-  return{lv,pct:Math.min(100,Math.round(((S.aura-c)/(n-c))*100)),aura:S.aura};
-}
-
-// Week days
-function weekDays(center){
-  const d=center?new Date(center):new Date();
-  const today=new Date().toDateString();
-  return Array.from({length:7},(_,i)=>{
-    const x=new Date(d);x.setDate(d.getDate()+i-3);
-    return{name:WD[x.getDay()],num:x.getDate(),date:x.toDateString(),isToday:x.toDateString()===today};
-  });
-}
-
-// Tasks
-function allTasks(){
-  const a=[];
-  S.categories.forEach(c=>c.habits.forEach(h=>a.push({...h,catName:c.name,catColor:c.color})));
-  return a.sort((a,b)=>(a.time||'00:00').localeCompare(b.time||'00:00'));
-}
-
-// Render Hoje
-function renderHoje(){
-  const li=lvlInfo();
-  const dk=S.selectedDate;
-  const days=weekDays(new Date(dk));
-  const tasks=allTasks();
-  const ts=S.taskStates[dk]||{};
-  const notifBar=(!S.notif&&'Notification' in window)?`<div class="notif-bar">🔔<span style="flex:1;color:var(--text2)">Ative notificações para alarmes de despertar e dormir.</span><button onclick="askNotif()">Ativar</button></div>`:'';
-  const weekHtml=days.map(d=>`<div class="day-chip${d.isToday?' today':''}${d.date===dk?' selected':''}" onclick="selDay('${d.date}')"><div class="dname">${d.name}</div><div class="dnum">${d.num}</div></div>`).join('');
-  const dl=new Date(dk).toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-  const done=Object.values(ts).filter(v=>v==='done').length;
-
-  let tasksHtml='';
-  if(!tasks.length){
-    tasksHtml=`<div class="empty-state"><div style="font-size:48px">📋</div><div style="font-size:15px;font-weight:600;color:var(--text)">Nenhuma tarefa ainda</div><div style="font-size:13px">Vá em Hábitos, crie uma categoria e adicione seus hábitos. Eles aparecerão aqui!</div></div>`;
-  } else {
-    tasksHtml=tasks.map(t=>{
-      const st=ts[t.id]||'open';
-      return`<div class="task-item${st==='done'?' done':''}${st==='migrated'?' migrated':''}">
-        <div class="bujo-group">
-          <div class="bsym${st==='open'?'':''}" title="Aberta" onclick="setSt(${t.id},'${dk}','open')">[ ]</div>
-          <div class="bsym${st==='done'?' s-done':''}" title="Feita" onclick="setSt(${t.id},'${dk}','done')">[x]</div>
-          <div class="bsym${st==='migrated'?' s-migrated':''}" title="Migrada" onclick="setSt(${t.id},'${dk}','migrated')">[>]</div>
-          <div class="bsym${st==='note'?' s-note':''}" title="Nota" onclick="setSt(${t.id},'${dk}','note')">[-]</div>
+    <!-- Header Principal -->
+    <header class="header">
+        <div class="header-content">
+            <div class="title">✨ Projeto Aura</div>
+            <div class="aura-status">
+                <div class="aura-level" id="auraLevel">Nível 1</div>
+                <div class="aura-icon">💫</div>
+                <div class="aura-bar-container">
+                    <div class="aura-bar" id="auraBar" style="width: 0%; background: linear-gradient(90deg, var(--red), var(--primary));"></div>
+                </div>
+                <div style="font-size: 12px; min-width: 50px; text-align: right;" id="auraPoints">0 / 100</div>
+            </div>
         </div>
-        <div class="task-info">
-          <div class="task-name">${t.emoji} ${t.name}</div>
-          <div class="task-meta">${t.time} · ${t.catName}</div>
-          <div class="task-aura">+${t.auraReward} aura</div>
+    </header>
+
+    <!-- Área Principal -->
+    <main class="main-content">
+        <!-- Seção: Hoje -->
+        <section class="section active" id="section-hoje">
+            <div class="card">
+                <div class="card-title">📅 Calendário</div>
+                <div class="calendar-horizontal" id="calendarDays"></div>
+                <button class="btn-global" onclick="openGlobalCalendar()">
+                    📅 Calendário Global - Selecionar Data
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-title">📝 Tarefas Hoje</div>
+                <div class="task-list" id="taskList">
+                    <!-- Tasks renderizadas aqui -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção: Hábitos -->
+        <section class="section" id="section-habitos">
+            <div class="card">
+                <div class="card-title">📊 Categorias</div>
+                <div id="categoryList"></div>
+                <button class="btn-global" onclick="showCategoryForm()" style="margin-top:10px;">+ Nova Categoria</button>
+            </div>
+            <div class="card">
+                <div class="card-title">➕ Criar Hábito/Tarefa</div>
+                <button class="btn-purple" onclick="showTaskForm('habit')">+ Novo Hábito</button>
+                <button class="btn-purple" onclick="showTaskForm('recurring')" style="margin-top:10px;">+ Tarefa Recorrente</button>
+                <button class="btn-purple" onclick="showTaskForm('unique')" style="margin-top:10px;">+ Tarefa Única</button>
+            </div>
+        </section>
+
+        <!-- Seção: Diário -->
+        <section class="section" id="section-diar">
+            <div class="card">
+                <div class="card-title">📖 Diário Pessoal</div>
+                <p style="font-size:12px;color:#888;margin-bottom:15px;">
+                    📝 Dica: Escrever sobre seu dia ajuda a processar emoções, reduzir o estresse e aumentar a autoconsciência. Não se preocupe com perfeição!
+                </p>
+                <textarea class="diary-textarea" id="diaryText" placeholder="Escreva suas reflexões do dia aqui..."></textarea>
+                <button class="btn-purple" style="margin-top:10px;" onclick="saveDiary()">💾 Salvar Diário</button>
+            </div>
+        </section>
+
+        <!-- Seção: Carteira -->
+        <section class="section" id="section-carteira">
+            <div class="card">
+                <div class="card-title">💰 Carteira</div>
+                <p style="text-align:center;color:#888;padding:40px;">
+                    🏦 Módulo financeiro em desenvolvimento.<br>
+                    Funcionalidades virão em atualizações futuras!
+                </p>
+            </div>
+        </section>
+
+        <!-- Seção: Pessoas -->
+        <section class="section" id="section-pessoas">
+            <div class="card">
+                <div class="card-title">👥 Rede de Pessoas</div>
+                <p style="text-align:center;color:#888;padding:40px;">
+                    🤝 CRM pessoal em construção.<br>
+                    Sincronização de contatos disponível em breve!
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Barra de Navegação -->
+    <nav class="bottom-nav">
+        <a class="nav-item active" onclick="switchTab('hoje')">
+            <span class="nav-icon">✨</span>
+            <span class="nav-label">Hoje</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('habitos')">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Hábitos</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('diar')">
+            <span class="nav-icon">📖</span>
+            <span class="nav-label">Diário</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('carteira')">
+            <span class="nav-icon">💰</span>
+            <span class="nav-label">Carteira</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('pessoas')">
+            <span class="nav-icon">👥</span>
+            <span class="nav-label">Pessoas</span>
+        </a>
+    </nav>
+
+    <!-- Onboarding Modal -->
+    <div class="modal-overlay active" id="onboardingModal">
+        <div class="modal">
+            <div id="onboardingStep1">
+                <h2 class="modal-title">👋 Bem-vindo ao Aura!</h2>
+                <p class="modal-text">Seu aplicativo offline de organização pessoal focado em hábitos e gamificação.</p>
+                <button class="btn-purple" onclick="nextOnboardingStep(2)">Começar ✨</button>
+            </div>
+            <div id="onboardingStep2" style="display:none;">
+                <h2 class="modal-title">🌙 Seu Ciclo Circadiano</h2>
+                <p class="modal-text">Configure seus horários para otimizar sua rotina:</p>
+                <div class="form-group">
+                    <label class="form-label">Horário de Acordar:</label>
+                    <input type="time" class="form-input" id="wakeTime" value="07:00">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Horário de Dormir:</label>
+                    <input type="time" class="form-input" id="sleepTime" value="23:00">
+                </div>
+                <button class="btn-purple" onclick="nextOnboardingStep(3)">Continuar →</button>
+            </div>
+            <div id="onboardingStep3" style="display:none;">
+                <h2 class="modal-title">🔔 Alarmes e Avisos</h2>
+                <p class="modal-text">Notificações sonoras persistentes nos horários configurados.</p>
+                <button class="btn-purple" onclick="requestNotificationPermission()">🔔 Permitir Notificações</button>
+                <button class="btn-purple" onclick="nextOnboardingStep(4)" style="margin-top:10px;">Continuar →</button>
+            </div>
+            <div id="onboardingStep4" style="display:none;">
+                <h2 class="modal-title">🤝 Contrato de Honestidade</h2>
+                <p class="modal-text">
+                    O sistema de Aura premia suas conquistas e penaliza vícios.<br>
+                    <strong>⚠️ Aviso:</strong> Mentir no check-in noturno só engana a VOCÊ.<br>
+                    Este app é sua ferramenta de autoajuda!
+                </p>
+                <label style="display:flex;align-items:center;gap:10px;color:#ccc;">
+                    <input type="checkbox" id="honestyCheck" onclick="document.getElementById('btnFinish').disabled=!this.checked">
+                    Eu concordo em ser honesto(a) comigo mesmo(a)
+                </label>
+                <button class="btn-purple" id="btnFinish" disabled onclick="finishOnboarding()">🚀 Iniciar Jornada</button>
+            </div>
         </div>
-      </div>`;
-    }).join('');
-  }
-
-  document.getElementById('screen-hoje').innerHTML=`
-    ${notifBar}
-    <div class="aura-header">
-      <div class="aura-top"><span class="aura-title">⚡ AURA — ${li.aura} pts</span><span class="level-badge">LVL ${li.lv}</span></div>
-      <div class="aura-bar-bg"><div class="aura-bar-fill" style="width:${li.pct}%"></div></div>
-      <div class="aura-points">${li.pct}% para o próximo nível</div>
     </div>
-    <div class="week-nav">
-      <div class="week-strip">${weekHtml}</div>
-      <button class="cal-btn" onclick="openCal()">📅</button>
+
+    <!-- Modal Tarefa -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <h2 class="modal-title" id="taskModalTitle">Criar Tarefa</h2>
+            <form onsubmit="saveTask(event)">
+                <input type="hidden" id="taskType">
+                <div class="form-group">
+                    <label class="form-label">Título:</label>
+                    <input type="text" class="form-input" id="taskTitle" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Categoria:</label>
+                    <select class="form-input" id="taskCategory"></select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Emoji:</label>
+                    <input type="text" class="form-input" id="taskEmoji" placeholder="📝" maxlength="4">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Prioridade:</label>
+                    <select class="form-input" id="taskPriority">
+                        <option value="high">Alta 🔥</option>
+                        <option value="medium" selected>Média 🌟</option>
+                        <option value="low">Baixa 🌱</option>
+                    </select>
+                </div>
+                <div class="form-group" id="frequencyGroup">
+                    <label class="form-label">Frequência:</label>
+                    <select class="form-input" id="taskFrequency" onchange="toggleFrequencyOptions()">
+                        <option value="daily">Todos os dias</option>
+                        <option value="weekly">Dias da semana</option>
+                        <option value="monthly">Dias do mês</option>
+                        <option value="yearly">Datas específicas</option>
+                        <option value="interval">Intervalo (X dias)</option>
+                        <option value="times">X vezes por período</option>
+                    </select>
+                </div>
+                <div id="frequencyOptions"></div>
+                <div class="form-group">
+                    <label class="form-label">Notificação:</label>
+                    <input type="time" class="form-input" id="taskNotification" placeholder="Opcional">
+                </div>
+                <button class="btn-purple" type="submit">💾 Salvar</button>
+            </form>
+        </div>
     </div>
-    <div style="font-size:12px;color:var(--text2);margin-bottom:12px;font-style:italic">${dl}</div>
-    <div class="bujo-legend">
-      <div class="li"><span class="ls" style="color:var(--text2)">[ ]</span><span>Aberta</span></div>
-      <div class="li"><span class="ls" style="color:var(--neon)">[x]</span><span>Feita</span></div>
-      <div class="li"><span class="ls" style="color:#ffc800">[>]</span><span>Migrada</span></div>
-      <div class="li"><span class="ls" style="color:var(--text2)">[-]</span><span>Nota</span></div>
+
+    <!-- Modal Categoria -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal">
+            <h2 class="modal-title">📂 Nova Categoria</h2>
+            <form onsubmit="saveCategory(event)">
+                <div class="form-group">
+                    <label class="form-label">Nome:</label>
+                    <input type="text" class="form-input" id="categoryName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Cor (hex):</label>
+                    <input type="color" class="form-input" id="categoryColor" value="#00f3ff" style="height:40px;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Emoji:</label>
+                    <input type="text" class="form-input" id="categoryEmoji" placeholder="🏷️" maxlength="4">
+                </div>
+                <button class="btn-purple">💾 Criar Categoria</button>
+            </form>
+        </div>
     </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div class="section-title" style="margin-bottom:0">Tarefas do dia</div>
-      ${tasks.length?`<span style="font-size:11px;color:var(--text2)">${done}/${tasks.length} feitas</span>`:''}
+
+    <!-- Check-in Noturno -->
+    <div class="night-checkin" id="nightCheckin">
+        <div class="night-card">
+            <h2 class="modal-title" style="color:var(--red);">🌙 Check-in Noturno</h2>
+            <p class="modal-text" style="color:#ccc;">Hora de refletir sobre o dia. Seja honesto(a) consigo mesmo(a)!</p>
+            <textarea class="diary-textarea" id="nightDiary" placeholder="Como foi seu dia hoje? O que aprendeu? O que pode melhorar amanhã?"></textarea>
+            <div style="margin:20px 0;">
+                <h3 style="color:var(--red);margin-bottom:15px;">Gestão de Vícios 🚭</h3>
+                <div class="vice-item">
+                    <span style="font-size:18px;">🚬 Você fumou hoje?</span>
+                    <div class="toggle" id="vice1" onclick="toggleVice(this)"></div>
+                </div>
+                <div class="vice-item">
+                    <span style="font-size:18px;">🍺 Consumiu álcool?</span>
+                    <div class="toggle" id="vice2" onclick="toggleVice(this)"></div>
+                </div>
+                <div class="vice-item">
+                    <span style="font-size:18px;">🔞 Masturbou-se?</span>
+                    <div class="toggle" id="vice3" onclick="toggleVice(this)"></div>
+                </div>
+            </div>
+            <button class="btn-purple" onclick="finishNightCheckin()">💤 Finalizar e Dormir</button>
+        </div>
     </div>
-    ${tasksHtml}
-    <div style="height:16px"></div>
-    <button class="btn-secondary" style="font-size:13px" onclick="openNight()">🌙 Check-in noturno</button>
-  `;
-}
 
-function setSt(id,dk,nst){
-  if(!S.taskStates[dk])S.taskStates[dk]={};
-  const prev=S.taskStates[dk][id]||'open';
-  S.taskStates[dk][id]=nst;
-  const t=allTasks().find(x=>x.id===id);
-  const r=t?t.auraReward:10;
-  if(prev!=='done'&&nst==='done'){S.aura+=r;flash('+'+r+' Aura ⚡');}
-  else if(prev==='done'&&nst!=='done')S.aura=Math.max(0,S.aura-r);
-  sv();renderHoje();
-}
-function selDay(ds){S.selectedDate=ds;sv();renderHoje();}
-function askNotif(){Notification.requestPermission().then(p=>{S.notif=(p==='granted');sv();if(p==='granted'){startAlarm();renderHoje();}});}
+    <!-- Calendar Modal -->
+    <div class="modal-overlay" id="calendarModal">
+        <div class="modal" style="max-width:400px;">
+            <h2 class="modal-title">📅 Selecionar Data</h2>
+            <input type="date" class="form-input" id="globalDate" style="margin-bottom:15px;">
+            <button class="btn-purple" onclick="selectGlobalDate()">Selecionar</button>
+            <button class="btn-purple" onclick="closeCalendarModal()" style="background:#444;margin-top:10px;">Cancelar</button>
+        </div>
+    </div>
 
-// Calendar
-function openCal(){calView=new Date(S.selectedDate);renderCal();document.getElementById('calModal').classList.add('open');}
-function calNav(d){calView.setMonth(calView.getMonth()+d);renderCal();}
-function renderCal(){
-  const y=calView.getFullYear(),m=calView.getMonth();
-  document.getElementById('calLabel').textContent=MN[m]+' '+y;
-  const fd=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
-  const today=new Date().toDateString(),sel=S.selectedDate;
-  let h=WD.map(d=>`<div class="cdname">${d[0]}</div>`).join('');
-  for(let i=0;i<fd;i++)h+=`<div class="cday empty"></div>`;
-  for(let d=1;d<=dim;d++){
-    const ds=new Date(y,m,d).toDateString();
-    h+=`<div class="cday${ds===today?' ctoday':''}${ds===sel?' csel':''}" onclick="calSel('${ds}')">${d}</div>`;
-  }
-  document.getElementById('calGrid').innerHTML=h;
-}
-function calSel(ds){S.selectedDate=ds;sv();document.getElementById('calModal').classList.remove('open');renderHoje();}
+    <!-- Toast -->
+    <div class="toast" id="toast">+10 Aura! 🌟</div>
 
-// Habitos
-function renderHabitos(){
-  let h='';
-  S.categories.forEach((cat,ci)=>{
-    const rows=cat.habits.map((hb,hi)=>`<div class="habit-row"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">${hb.emoji} ${hb.name}</span><div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><span class="hbadge">${hb.type==='habito'?'Hábito':hb.type==='tarefa_recorrente'?'Recorrente':'Única'}</span><button class="btn-del" onclick="delHabit(${ci},${hi})">✕</button></div></div>`).join('');
-    h+=`<div class="cat-card"><div class="cat-hdr"><div class="cat-hdr-l"><div class="cat-dot" style="background:${cat.color}"></div><span style="font-size:16px">${cat.emoji}</span><span style="font-weight:600;font-size:15px">${cat.name}</span></div><button class="btn-del" onclick="delCat(${ci})">Excluir</button></div>${rows||'<div style="color:var(--text2);font-size:12px;padding:4px 0">Nenhum item. Use o + para adicionar.</div>'}</div>`;
-  });
-  if(!h)h=`<div class="empty-state"><div style="font-size:48px">📂</div><div style="font-size:15px;font-weight:600;color:var(--text)">Nenhuma categoria ainda</div><div style="font-size:13px">Toque no <strong style="color:var(--neon)">+</strong> para criar sua primeira categoria!</div></div>`;
-  document.getElementById('screen-habitos').innerHTML=`<div class="section-title">Minhas categorias</div>${h}`;
-}
-function delCat(i){if(!confirm('Excluir esta categoria e todos os itens?'))return;S.categories.splice(i,1);sv();renderHabitos();}
-function delHabit(ci,hi){S.categories[ci].habits.splice(hi,1);sv();renderHabitos();}
+    <script>
+        // ========== ESTADO DA APLICAÇÃO ==========
+        let state = {
+            currentDate: new Date(),
+            selectedDate: new Date(),
+            aura: { points: 0, level: 1, nextLevel: 100 },
+            tasks: [],
+            categories: [],
+            completedToday: new Set(),
+            wakeTime: '07:00',
+            sleepTime: '23:00',
+            diary: '',
+            vices: { vice1: false, vice2: false, vice3: false }
+        };
 
-// Diario
-function renderDiario(){
-  const today=new Date();
-  const dl=today.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-  const dk=today.toDateString();
-  const saved=S.diaryEntries[dk]||'';
-  document.getElementById('screen-diario').innerHTML=`<div class="diary-hint">📖 Escrever 5 minutos por dia reduz o estresse e melhora o autoconhecimento. Cada nova entrada vale +5 Aura.</div><div style="font-size:17px;font-weight:600;margin-bottom:12px">${dl}</div><textarea class="input-field" id="diaryText" placeholder="Como foi seu dia? O que você aprendeu? O que melhorar amanhã?">${saved}</textarea><button class="save-btn" onclick="saveDiary()">💾 Salvar entrada</button>`;
-}
-function saveDiary(){
-  const dk=new Date().toDateString(),txt=document.getElementById('diaryText').value;
-  const isNew=!S.diaryEntries[dk];
-  S.diaryEntries[dk]=txt;
-  if(isNew&&txt.trim()){S.aura+=5;flash('+5 Aura ✍️');}
-  sv();
-}
-function renderPlaceholder(id,icon,t,d){document.getElementById('screen-'+id).innerHTML=`<div class="empty-state"><div style="font-size:48px">${icon}</div><div style="font-size:18px;font-weight:600;color:var(--text)">${t}</div><div style="font-size:13px;line-height:1.7">${d}</div></div>`;}
+        // ========== INICIALIZAÇÃO ==========
+        function init() {
+            loadState();
+            renderCalendar();
+            renderTasks();
+            renderCategories();
+            updateAuraDisplay();
+            loadDiary();
+            setupSleepCheck();
+        }
 
-// Flash
-function flash(msg){const e=document.createElement('div');e.className='aura-flash';e.textContent=msg;document.body.appendChild(e);setTimeout(()=>e.remove(),1000);}
+        function loadState() {
+            try {
+                const saved = localStorage.getItem('auraState');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    state = { ...state, ...parsed };
+                    state.currentDate = new Date(state.currentDate);
+                    state.selectedDate = new Date(state.selectedDate);
+                    state.completedToday = new Set(state.completedToday || []);
+                }
+            } catch(e) {}
+        }
 
-// Night
-function openNight(){document.querySelectorAll('.toggle').forEach(t=>t.classList.remove('on'));document.getElementById('nightDiary').value='';document.getElementById('nightModal').classList.add('open');}
-function toggleVice(el,p){const w=el.classList.contains('on');el.classList.toggle('on');S.aura=Math.max(0,S.aura+(w?p:-p));sv();}
-function closeNight(){const d=document.getElementById('nightDiary').value;if(d.trim())S.diaryEntries[new Date().toDateString()+'_night']=d;sv();document.getElementById('nightModal').classList.remove('open');renderHoje();}
+        function saveState() {
+            const toSave = {
+                ...state,
+                currentDate: state.currentDate.toISOString(),
+                selectedDate: state.selectedDate.toISOString(),
+                completedToday: [...state.completedToday]
+            };
+            localStorage.setItem('auraState', JSON.stringify(toSave));
+        }
 
-// Create
-function openCreate(){
-  const isH=curTab==='habitos';
-  document.getElementById('modalTitle').textContent=isH?'Criar categoria / hábito':'Nova tarefa';
-  document.getElementById('modalContent').innerHTML=buildForm(isH);
-  document.getElementById('createModal').classList.add('open');
-}
-function closeCreate(){document.getElementById('createModal').classList.remove('open');}
+        // ========== ONBOARDING ==========
+        function nextOnboardingStep(n) {
+            document.getElementById('onboardingStep1').style.display = 'none';
+            document.getElementById('onboardingStep2').style.display = 'none';
+            document.getElementById('onboardingStep3').style.display = 'none';
+            document.getElementById('onboardingStep4').style.display = 'none';
+            document.getElementById('onboardingStep' + n).style.display = 'block';
+        }
 
-function buildForm(isH){
-  const cOpts=S.categories.map(c=>`<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
-  const dots=COLORS.map(c=>`<div class="cdot${c===selColor?' sel':''}" style="background:${c}" onclick="pickCol(this,'${c}')"></div>`).join('');
-  const freqs=['Todos os dias','Seg a Sex','Dias da semana','Dias do mês','X vezes/semana','A cada X dias'];
-  if(isH){
-    return`
-      <div style="background:var(--bg3);border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">Crie uma nova categoria ou adicione itens a uma existente.</div>
-      <div><label>Nome da nova categoria</label><input class="input-field" id="catName" placeholder="Ex: Saúde"></div>
-      <div><label>Emoji</label><input class="input-field" id="catEmoji" placeholder="💪" style="width:90px"></div>
-      <div><label>Cor</label><div class="color-grid">${dots}</div></div>
-      <button class="btn-primary" onclick="createCat()">Criar categoria</button>
-      <hr class="div">
-      <div style="font-size:14px;font-weight:600">Adicionar item a categoria existente</div>
-      ${cOpts?`
-      <div><label>Categoria</label><select class="input-field" id="selCat">${cOpts}</select></div>
-      <div><label>Nome do item</label><input class="input-field" id="hName" placeholder="Ex: Meditar 10min"></div>
-      <div><label>Emoji</label><input class="input-field" id="hEmoji" placeholder="🧘" style="width:90px"></div>
-      <div><label>Horário</label><input class="input-field" type="time" id="hTime" value="08:00"></div>
-      <div><label>Tipo</label><select class="input-field" id="hType"><option value="habito">Hábito</option><option value="tarefa_recorrente">Tarefa recorrente</option><option value="tarefa_unica">Tarefa única</option></select></div>
-      <div><label>Frequência</label><div class="freq-grid">${freqs.map((f,i)=>`<div class="fchip${i===0?' sel':''}" onclick="pickFreq(this)">${f}</div>`).join('')}</div></div>
-      <div><label>Aura por conclusão</label><input class="input-field" type="number" id="hAura" value="20" min="5" max="200"></div>
-      <button class="btn-primary" onclick="createHabit()">Adicionar item</button>`
-      :`<div style="color:var(--text2);font-size:13px;padding:8px 0">Crie uma categoria primeiro (acima).</div>`}`;
-  }
-  return`
-    <div><label>Nome da tarefa</label><input class="input-field" id="tName" placeholder="Ex: Reunião com equipe"></div>
-    <div><label>Emoji</label><input class="input-field" id="tEmoji" placeholder="📌" style="width:90px"></div>
-    <div><label>Horário</label><input class="input-field" type="time" id="tTime" value="09:00"></div>
-    ${cOpts?`<div><label>Categoria</label><select class="input-field" id="tCat">${cOpts}</select></div><div><label>Aura por conclusão</label><input class="input-field" type="number" id="tAura" value="15" min="5" max="200"></div><button class="btn-primary" onclick="createTask()">Criar tarefa</button>`:'<div style="color:var(--text2);font-size:13px">Crie uma categoria em Hábitos primeiro.</div>'}`;
-}
+        function requestNotificationPermission() {
+            if ('Notification' in window) {
+                Notification.requestPermission();
+                showToast('🔔 Notificações ativadas!');
+            }
+        }
 
-function pickCol(el,c){document.querySelectorAll('.cdot').forEach(d=>d.classList.remove('sel'));el.classList.add('sel');selColor=c;}
-function pickFreq(el){document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+        function finishOnboarding() {
+            const wake = document.getElementById('wakeTime').value;
+            const sleep = document.getElementById('sleepTime').value;
+            state.wakeTime = wake;
+            state.sleepTime = sleep;
+            saveState();
 
-function createCat(){
-  const name=(document.getElementById('catName').value||'').trim();
-  if(!name){alert('Digite um nome.');return;}
-  S.categories.push({id:Date.now(),name,color:selColor,emoji:document.getElementById('catEmoji').value.trim()||'📁',habits:[]});
-  sv();closeCreate();renderHabitos();
-}
-function createHabit(){
-  const name=(document.getElementById('hName').value||'').trim();
-  if(!name){alert('Digite um nome.');return;}
-  const cat=S.categories.find(c=>c.id===parseInt(document.getElementById('selCat').value));
-  if(!cat)return;
-  cat.habits.push({id:Date.now(),name,emoji:document.getElementById('hEmoji').value.trim()||'⭐',time:document.getElementById('hTime').value||'08:00',type:document.getElementById('hType').value,freq:document.querySelector('.fchip.sel')?.textContent||'Todos os dias',auraReward:parseInt(document.getElementById('hAura').value)||20});
-  sv();closeCreate();renderHabitos();
-}
-function createTask(){
-  const name=(document.getElementById('tName').value||'').trim();
-  if(!name){alert('Digite um nome.');return;}
-  const cat=S.categories.find(c=>c.id===parseInt(document.getElementById('tCat').value));
-  if(!cat)return;
-  cat.habits.push({id:Date.now(),name,emoji:document.getElementById('tEmoji').value.trim()||'📌',time:document.getElementById('tTime').value||'09:00',type:'tarefa_unica',freq:'once',auraReward:parseInt(document.getElementById('tAura').value)||15});
-  sv();closeCreate();renderHoje();
-}
+            const modal = document.getElementById('onboardingModal');
+            modal.classList.remove('active');
+            showToast('🎉 Iniciando jornada!');
+        }
 
-function renderAll(){renderHoje();renderHabitos();}
-document.getElementById('fab').onclick=openCreate;
-</script>
+        // ========== CALENDÁRIO ==========
+        function renderCalendar() {
+            const container = document.getElementById('calendarDays');
+            container.innerHTML = '';
+            const today = new Date();
+            const days = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB'];
+
+            for (let i = -3; i <= 3; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+
+                const dayItem = document.createElement('div');
+                dayItem.className = 'day-item';
+                if (i === 0) dayItem.classList.add('today');
+                if (date.toDateString() === state.selectedDate.toDateString()) {
+                    dayItem.classList.add('active');
+                }
+
+                const points = calculateAuraForDate(date);
+
+                dayItem.innerHTML = `
+                    <div class="day-name">${days[date.getDay()]}</div>
+                    <div class="day-number">${date.getDate()}</div>
+                    <div class="aura-points">+${points}</div>
+                `;
+
+                dayItem.onclick = () => selectDate(date);
+                container.appendChild(dayItem);
+            }
+        }
+
+        function calculateAuraForDate(date) {
+            const tasks = state.tasks.filter(t => {
+                const tDate = new Date(t.date);
+                return tDate.toDateString() === date.toDateString() && t.completed;
+            });
+            return tasks.reduce((sum, t) => sum + (t.priority === 'high' ? 15 : t.priority === 'medium' ? 10 : 5), 0);
+        }
+
+        function selectDate(date) {
+            state.selectedDate = date;
+            renderCalendar();
+            renderTasks();
+        }
+
+        function openGlobalCalendar() {
+            document.getElementById('globalDate').valueAsDate = state.selectedDate;
+            document.getElementById('calendarModal').classList.add('active');
+        }
+
+        function selectGlobalDate() {
+            const date = document.getElementById('globalDate').valueAsDate;
+            if (date) {
+                selectDate(date);
+            }
+            closeCalendarModal();
+        }
+
+        function closeCalendarModal() {
+            document.getElementById('calendarModal').classList.remove('active');
+        }
+
+        // ========== TAREFAS ==========
+        function renderTasks() {
+            const container = document.getElementById('taskList');
+            const dateStr = state.selectedDate.toDateString();
+
+            let tasks = state.tasks.filter(t => {
+                const tDate = new Date(t.date);
+                return tDate.toDateString() === dateStr;
+            });
+
+            // Ordena por prioridade (Alta -> Media -> Baixa) e horário
+            tasks.sort((a, b) => {
+                const priorityOrder = { high: 3, medium: 2, low: 1 };
+                if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+                    return priorityOrder[b.priority] - priorityOrder[a.priority];
+                }
+                return a.time.localeCompare(b.time);
+            });
+
+            if (tasks.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">Nenhuma tarefa para este dia ✨</p>';
+                return;
+            }
+
+            container.innerHTML = tasks.map(task => {
+                const cat = state.categories.find(c => c.id === task.categoryId);
+                const completed = state.completedToday.has(task.id);
+                if (completed) {
+                    task.completed = true;
+                }
+                return `
+                    <div class="task-item ${task.completed ? 'completed' : ''}" data-id="${task.id}">
+                        <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask('${task.id}', this)"></div>
+                        <div class="task-emoji">${task.emoji || '📝'}</div>
+                        <div class="task-content">
+                            <div class="task-text">${task.title}</div>
+                            <div class="task-meta">
+                                ${cat ? `<span class="category-badge" style="background:${cat.color}22;color:${cat.color}">${cat.emoji || ''} ${cat.name}</span>` : ''}
+                                <span style="margin-left:8px;">⏰ ${task.time}</span>
+                            </div>
+                        </div>
+                        <div class="task-priority priority-${task.priority}">${task.priority.toUpperCase()}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleTask(id, el) {
+            const task = state.tasks.find(t => t.id === id);
+            if (!task) return;
+
+            if (state.completedToday.has(id)) {
+                state.completedToday.delete(id);
+                task.completed = false;
+                state.aura.points = Math.max(0, state.aura.points - getPointsForTask(task));
+                el.classList.remove('checked');
+                el.parentElement.classList.remove('completed');
+                showToast(`-${getPointsForTask(task)} Aura 👎`);
+                // Tarefa volta para o dia seguinte (marcador [>])
+                rescheduleTask(task);
+            } else {
+                state.completedToday.add(id);
+                task.completed = true;
+                state.aura.points += getPointsForTask(task);
+                el.classList.add('checked');
+                el.parentElement.classList.add('completed');
+                el.parentElement.classList.add('aura-animation');
+                showToast(`+${getPointsForTask(task)} Aura 🌟`);
+
+                // Play celebration sound effect
+                celebrate();
+            }
+
+            updateAuraDisplay();
+            checkLevelUp();
+            saveState();
+        }
+
+        function getPointsForTask(task) {
+            const points = { high: 15, medium: 10, low: 5 };
+            return points[task.priority] || 5;
+        }
+
+        function rescheduleTask(task) {
+            // Move para o próximo dia com marcador [>]
+            const nextDay = new Date(state.selectedDate);
+            nextDay.setDate(nextDay.getDate() + 1);
+            task.date = nextDay.toISOString();
+            task.title = task.title.replace(/^\[>\]\s*/, '') + ' [>]';
+            saveState();
+            renderTasks();
+        }
+
+        function showTaskForm(type) {
+            const categorySelect = document.getElementById('taskCategory');
+            categorySelect.innerHTML = state.categories.map(c =>
+                `<option value="${c.id}">${c.emoji || ''} ${c.name}</option>`
+            ).join('');
+
+            document.getElementById('taskType').value = type;
+            document.getElementById('taskEmoji').value = type === 'habit' ? '📊' : type === 'recurring' ? '🔄' : '📝';
+            document.getElementById('taskModal').classList.add('active');
+
+            const freqGroup = document.getElementById('frequencyOptions');
+            if (type === 'unique') {
+                document.getElementById('frequencyGroup').style.display = 'none';
+                freqGroup.innerHTML = '';
+            } else {
+                document.getElementById('frequencyGroup').style.display = 'block';
+                toggleFrequencyOptions();
+            }
+        }
+
+        function toggleFrequencyOptions() {
+            const freq = document.getElementById('taskFrequency').value;
+            const container = document.getElementById('frequencyOptions');
+
+            const options = {
+                weekly: '<div style="margin-top:10px;"><label class="form-label">Dias da semana:</label><br>' +
+                    ['SEG','TER','QUA','QUI','SEX','SAB','DOM'].map(d =>
+                        `<label style="margin:5px 10px;"><input type="checkbox" name="weekDays" value="${d}"> ${d}</label>`
+                    ).join('') + '</div>',
+                monthly: '<div style="margin-top:10px;"><label class="form-label">Dias do mês (1-31):</label><input type="text" class="form-input" placeholder="1,5,10 ou 1-10,31" id="monthDays"></div>' +
+                    '<label style="display:flex;align-items:center;gap:5px;margin-top:10px;"><input type="checkbox" id="lastDay"> Último dia do mês</label>',
+                yearly: '<div style="margin-top:10px;"><label class="form-label">Datas (DD/MM):</label><input type="text" class="form-input" placeholder="01/01,15/08,25/12" id="yearDates"></div>',
+                interval: '<div style="margin-top:10px;"><label class="form-label">A cada X dias (ativos):</label><input type="number" class="form-input" id="intervalActive" value="1" min="1"><label class="form-label" style="margin-top:10px;">Dias de descanso:</label><input type="number" class="form-input" id="intervalRest" value="0" min="0"></div>',
+                times: '<div style="margin-top:10px;"><label class="form-label">Vezes por:</label><select class="form-input" id="timesPeriod"><option value="week">Semana</option><option value="month">Mês</option><option value="year">Ano</option></select><label class="form-label" style="margin-top:10px;">Quantidade:</label><input type="number" class="form-input" id="timesCount" value="1" min="1"></div>'
+            };
+
+            container.innerHTML = options[freq] || '';
+        }
+
+        function saveTask(e) {
+            e.preventDefault();
+            const task = {
+                id: Date.now().toString(),
+                type: document.getElementById('taskType').value,
+                title: document.getElementById('taskTitle').value,
+                categoryId: document.getElementById('taskCategory').value,
+                emoji: document.getElementById('taskEmoji').value,
+                priority: document.getElementById('taskPriority').value,
+                time: document.getElementById('taskNotification').value || '00:00',
+                frequency: document.getElementById('taskFrequency').value,
+                date: state.selectedDate.toISOString(),
+                completed: false
+            };
+
+            state.tasks.push(task);
+            saveState();
+            renderTasks();
+            document.getElementById('taskModal').classList.remove('active');
+            e.target.reset();
+            showToast('✅ Tarefa criada!');
+        }
+
+        // ========== CATEGORIAS ==========
+        function renderCategories() {
+            const container = document.getElementById('categoryList');
+            if (state.categories.length === 0) {
+                container.innerHTML = '<p style="text-align:center;color:#666;padding:20px;">Nenhuma categoria 💼<br>Crie uma para organizar suas tarefas!</p>';
+                return;
+            }
+            container.innerHTML = state.categories.map(cat => `
+                <div class="task-item">
+                    <div style="font-size:24px">${cat.emoji || '🏷️'}</div>
+                    <div class="task-content">
+                        <div class="task-text">${cat.name}</div>
+                        <div class="task-meta">${state.tasks.filter(t => t.categoryId === cat.id).length} tarefas</div>
+                    </div>
+                    <div class="category-badge" style="background:${cat.color}22;color:${cat.color}">
+                        ${cat.color.toUpperCase()}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showCategoryForm() {
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        function saveCategory(e) {
+            e.preventDefault();
+            const cat = {
+                id: Date.now().toString(),
+                name: document.getElementById('categoryName').value,
+                color: document.getElementById('categoryColor').value,
+                emoji: document.getElementById('categoryEmoji').value
+            };
+            state.categories.push(cat);
+            saveState();
+            renderCategories();
+            document.getElementById('categoryModal').classList.remove('active');
+            e.target.reset();
+            showToast('📂 Categoria criada!');
+        }
+
+        // ========== AURA SYSTEM ==========
+        function updateAuraDisplay() {
+            const a = state.aura;
+            const percent = Math.min(100, (a.points / a.nextLevel) * 100);
+
+            // Gradiente da aura baseado no progresso
+            const r = Math.round(255 - (percent * 2.55));
+            const g = Math.round(percent * 2.55);
+            const color = `linear-gradient(90deg, rgb(${r},0,255), rgb(0,${g},255))`;
+
+            document.getElementById('auraBar').style.width = percent + '%';
+            document.getElementById('auraBar').style.background = color;
+            document.getElementById('auraPoints').textContent = `${a.points} / ${a.nextLevel}`;
+        }
+
+        function checkLevelUp() {
+            const a = state.aura;
+            if (a.points >= a.nextLevel) {
+                a.level++;
+                a.points = a.points - a.nextLevel;
+                a.nextLevel = Math.round(a.nextLevel * 1.5);
+
+                // Animação de level up
+                document.getElementById('auraLevel').style.animation = 'auraUp 0.5s ease 3';
+                showToast(`🎉 LEVEL UP! Agora é Nível ${a.level}! 🌟`);
+
+                setTimeout(() => {
+                    document.getElementById('auraLevel').style.animation = '';
+                }, 1500);
+            }
+            document.getElementById('auraLevel').textContent = `Nível ${a.level}`;
+        }
+
+        function celebrate() {
+            if (window.confetti) {
+                confetti({ particleCount: 50, spread: 60 });
+            }
+        }
+
+        // ========== DIÁRIO ==========
+        function loadDiary() {
+            const saved = localStorage.getItem('auraDiary_' + state.selectedDate.toDateString());
+            document.getElementById('diaryText').value = saved || '';
+        }
+
+        function saveDiary() {
+            const text = document.getElementById('diaryText').value;
+            localStorage.setItem('auraDiary_' + state.selectedDate.toDateString(), text);
+            showToast('💾 Diário salvo!');
+        }
+
+        // ========== CHECK-IN NOTURNO ==========
+        function setupSleepCheck() {
+            // Verifica se é hora do check-in noturno
+            setInterval(() => {
+                const now = new Date();
+                const sleep = state.sleepTime.split(':');
+                const sleepTime = new Date();
+                sleepTime.setHours(sleep[0], sleep[1], 0);
+
+                if (now >= sleepTime && !localStorage.getItem('nightCheckin_' + now.toDateString())) {
+                    showNightCheckin();
+                }
+            }, 60000); // Verifica a cada minuto
+        }
+
+        function showNightCheckin() {
+            document.getElementById('nightCheckin').style.display = 'flex';
+        }
+
+        function toggleVice(el) {
+            el.classList.toggle('on');
+        }
+
+        function finishNightCheckin() {
+            const vices = ['vice1', 'vice2', 'vice3'].filter(id =>
+                document.getElementById(id).classList.contains('on')
+            );
+
+            if (vices.length > 0) {
+                const loss = vices.length * 20;
+                state.aura.points = Math.max(0, state.aura.points - loss);
+                showToast(`⚠️ -${loss} Aura por vícios hoje... 😔`);
+            }
+
+            const diary = document.getElementById('nightDiary').value;
+            if (diary.trim()) {
+                localStorage.setItem('nightDiary_' + new Date().toDateString(), diary);
+            }
+
+            localStorage.setItem('nightCheckin_' + new Date().toDateString(), 'done');
+            document.getElementById('nightCheckin').style.display = 'none';
+            updateAuraDisplay();
+            saveState();
+        }
+
+        // ========== NAVEGAÇÃO ==========
+        function switchTab(tab) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            event.currentTarget.classList.add('active');
+            document.getElementById('section-' + tab).classList.add('active');
+
+            if (tab === 'diar') {
+                loadDiary();
+            }
+        }
+
+        // ========== NOTIFICAÇÕES ==========
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ========== INICIAR ==========
+        init();
+
+        // Check-in noturno automático na hora configurada
+        setInterval(() => {
+            const now = new Date();
+            const sleep = state.sleepTime.split(':');
+            const sleepTime = new Date();
+            sleepTime.setHours(parseInt(sleep[0]), parseInt(sleep[1]), 0, 0);
+
+            if (now.getHours() === parseInt(sleep[0]) && now.getMinutes() === parseInt(sleep[1])) {
+                if (!localStorage.getItem('nightCheckin_' + now.toDateString())) {
+                    showNightCheckin();
+                    // Notificação
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        new Notification('🌙 Hora do Check-in Noturno!', {
+                            body: 'Faça sua reflexão do dia e controle seus vícios.',
+                            icon: '🪄'
+                        });
+                    }
+                }
+            }
+        }, 60000);
+
+        // Tarefas recorrentes automáticas
+        setInterval(() => {
+            const todayStr = new Date().toDateString();
+            if (todayStr !== state.lastAutoCheck) {
+                state.lastAutoCheck = todayStr;
+                // Lógica de reinício de tarefas não concluídas já está no sistema
+                saveState();
+            }
+        }, 3600000); // Verifica a cada hora
+    </script>
 </body>
 </html>
