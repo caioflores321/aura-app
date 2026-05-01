@@ -10,131 +10,121 @@
 <title>AURA ✨</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --neon:#00d4ff;
-  --bg:#0a0a0f;
-  --bg2:#12121a;
-  --bg3:#1a1a26;
-  --border:#2a2a3a;
-  --text:#e8e8f0;
-  --text2:#8888aa;
-  --red:#ff4444;
-}
+:root{--neon:#00d4ff;--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;--border:#2a2a3a;--text:#e8e8f0;--text2:#8888aa;--red:#ff4444}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;font-size:14px}
-#app{height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
-/* Screens */
-.screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 16px 80px;display:none}
+#app{height:100vh;height:100dvh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
+.screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 16px 90px;display:none}
 .screen.active{display:block}
-/* Bottom Bar */
-.bottom-bar{display:flex;background:var(--bg2);border-top:1px solid var(--border);height:60px;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:10px;color:var(--text2);background:none;border:none;transition:color .2s}
+.bottom-bar{display:flex;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0px);min-height:60px;z-index:10}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-size:10px;color:var(--text2);background:none;border:none;padding:8px 0;min-width:0;transition:color .2s}
 .tab.active{color:var(--neon)}
-.tab-icon{font-size:20px}
-/* Onboarding */
+.tab-icon{font-size:20px;line-height:1}
 #onboarding{flex:1;display:flex;flex-direction:column;overflow-y:auto;background:var(--bg)}
-.onb-step{display:none;flex-direction:column;gap:18px;padding:32px 24px;animation:fadeIn .35s}
+.onb-step{display:none;flex-direction:column;gap:18px;padding:40px 24px 32px;animation:fadeIn .35s}
 .onb-step.active{display:flex}
 @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .onb-emoji{font-size:56px;text-align:center}
 .onb-title{font-size:24px;font-weight:700;text-align:center}
 .onb-desc{color:var(--text2);text-align:center;line-height:1.7;font-size:14px}
-/* Buttons */
 .btn-primary{background:var(--neon);color:#000;border:none;padding:14px 24px;border-radius:14px;font-weight:700;cursor:pointer;font-size:15px;width:100%}
 .btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border);padding:12px 24px;border-radius:14px;cursor:pointer;font-size:14px;width:100%}
-/* Inputs */
 label{color:var(--text2);font-size:12px;margin-bottom:4px;display:block}
-.input-field{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:12px 14px;border-radius:12px;font-size:15px;width:100%;outline:none;-webkit-appearance:none}
+.input-field{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:12px 14px;border-radius:12px;font-size:15px;width:100%;outline:none;-webkit-appearance:none;appearance:none}
 .input-field:focus{border-color:var(--neon)}
-select.input-field option{background:var(--bg3)}
-/* Contract */
+select.input-field{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%238888aa' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+select.input-field option{background:#1a1a26}
+textarea.input-field{min-height:180px;resize:none;line-height:1.7;padding:14px}
 .contract-box{background:var(--bg3);border:1px solid var(--neon);border-radius:14px;padding:18px;font-size:13px;color:var(--text2);line-height:1.8}
 .contract-box strong{color:var(--neon)}
-/* Aura Header */
-.aura-header{background:var(--bg2);border-radius:16px;padding:16px;margin-bottom:16px;border:1px solid var(--border)}
+.aura-header{background:var(--bg2);border-radius:16px;padding:16px;margin-bottom:14px;border:1px solid var(--border)}
 .aura-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .aura-title{font-size:13px;color:var(--text2)}
 .level-badge{background:var(--neon);color:#000;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
-.aura-bar-bg{background:var(--bg);border-radius:20px;height:8px;width:100%}
-.aura-bar-fill{background:var(--neon);height:8px;border-radius:20px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.aura-bar-bg{background:var(--bg);border-radius:20px;height:8px}
+.aura-bar-fill{background:var(--neon);height:8px;border-radius:20px;transition:width .6s}
 .aura-points{font-size:11px;color:var(--text2);margin-top:5px;text-align:right}
-/* Week strip */
-.week-strip{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-ms-overflow-style:none;scrollbar-width:none}
+.week-nav{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.week-strip{display:flex;gap:6px;flex:1;overflow-x:auto;padding-bottom:2px;-ms-overflow-style:none;scrollbar-width:none}
 .week-strip::-webkit-scrollbar{display:none}
-.day-chip{min-width:46px;padding:8px 4px;border-radius:12px;text-align:center;cursor:pointer;border:1px solid var(--border);background:var(--bg2);flex-shrink:0}
-.day-chip.today{border-color:rgba(0,212,255,.5)}
+.day-chip{min-width:44px;padding:8px 4px;border-radius:12px;text-align:center;cursor:pointer;border:1px solid var(--border);background:var(--bg2);flex-shrink:0;transition:all .15s}
+.day-chip.today{border-color:rgba(0,212,255,.45)}
 .day-chip.selected{background:var(--neon);border-color:var(--neon)}
 .day-chip .dname{font-size:9px;color:var(--text2)}
 .day-chip.selected .dname,.day-chip.selected .dnum{color:#000}
-.day-chip .dnum{font-size:16px;font-weight:600}
-/* Section title */
+.day-chip .dnum{font-size:15px;font-weight:600}
+.cal-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text2);width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0}
 .section-title{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
-/* Tasks */
-.task-item{background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;border:1px solid var(--border);cursor:pointer;transition:border-color .2s,opacity .3s;user-select:none}
-.task-item.done{opacity:.45}
-.task-item.done .task-name{text-decoration:line-through}
-.task-check{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;transition:all .25s}
-.task-check.checked{background:var(--neon);border-color:var(--neon);color:#000;font-weight:700}
+.task-item{background:var(--bg2);border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--border);transition:opacity .3s}
+.task-item.done{opacity:.4}
+.task-item.migrated{opacity:.55;border-style:dashed;border-color:#ffc80055}
+.bujo-group{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.bsym{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-weight:700;background:var(--bg3);color:var(--text2);font-family:monospace;transition:all .15s;user-select:none}
+.bsym.s-done{background:rgba(0,212,255,.15);border-color:var(--neon);color:var(--neon)}
+.bsym.s-migrated{background:rgba(255,200,0,.1);border-color:#ffc800;color:#ffc800}
+.bsym.s-note{background:rgba(136,136,170,.15);border-color:var(--text2);color:var(--text2)}
 .task-info{flex:1;min-width:0}
-.task-name{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.task-meta{font-size:11px;color:var(--text2);margin-top:2px}
-.task-aura-badge{font-size:11px;color:var(--neon);white-space:nowrap}
-/* Aura flash */
-.aura-flash{position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);background:rgba(0,212,255,.12);border:1px solid var(--neon);color:var(--neon);padding:10px 24px;border-radius:24px;font-weight:700;font-size:20px;pointer-events:none;animation:flashAnim 1s forwards;z-index:9999}
-@keyframes flashAnim{0%{opacity:1;transform:translate(-50%,-60%)}80%{opacity:.8}100%{opacity:0;transform:translate(-50%,-130%)}}
-/* FAB */
-.fab{position:fixed;bottom:72px;right:16px;width:52px;height:52px;border-radius:50%;background:var(--neon);color:#000;font-size:28px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 20px rgba(0,212,255,.35);z-index:50;transition:transform .15s}
-.fab:active{transform:scale(.92)}
-/* Category cards */
+.task-name{font-size:14px;line-height:1.4}
+.task-item.done .task-name{text-decoration:line-through}
+.task-meta{font-size:11px;color:var(--text2);margin-top:3px}
+.task-aura{font-size:11px;color:var(--neon);margin-top:2px}
+.bujo-legend{background:var(--bg3);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:var(--text2);display:flex;flex-wrap:wrap;gap:8px 16px}
+.li{display:flex;align-items:center;gap:5px}
+.ls{font-family:monospace;font-weight:700;font-size:12px}
+.aura-flash{position:fixed;top:35%;left:50%;transform:translate(-50%,-50%);background:rgba(0,212,255,.12);border:1px solid var(--neon);color:var(--neon);padding:10px 24px;border-radius:24px;font-weight:700;font-size:20px;pointer-events:none;animation:fl 1s forwards;z-index:9999}
+@keyframes fl{0%{opacity:1;transform:translate(-50%,-60%)}100%{opacity:0;transform:translate(-50%,-130%)}}
+.fab{position:fixed;bottom:74px;right:16px;width:52px;height:52px;border-radius:50%;background:var(--neon);color:#000;font-size:28px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 4px 20px rgba(0,212,255,.35);z-index:50}
 .cat-card{background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
-.cat-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.cat-dot{width:12px;height:12px;border-radius:50%}
-.cat-name-text{font-weight:600;font-size:15px}
-.habit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.cat-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cat-hdr-l{display:flex;align-items:center;gap:8px}
+.cat-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.habit-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;gap:8px}
 .habit-row:last-child{border-bottom:none}
-.habit-type-badge{font-size:10px;color:var(--text2);background:var(--bg);padding:3px 8px;border-radius:10px;white-space:nowrap}
-/* Diary */
+.hbadge{font-size:10px;color:var(--text2);background:var(--bg);padding:3px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.btn-del{background:rgba(255,68,68,.1);color:var(--red);border:1px solid rgba(255,68,68,.25);padding:4px 8px;border-radius:8px;cursor:pointer;font-size:11px;flex-shrink:0}
 .diary-hint{background:var(--bg3);border-radius:12px;padding:14px;font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:14px;border-left:3px solid var(--neon)}
-.diary-date-title{font-size:17px;font-weight:600;margin-bottom:12px}
-textarea.input-field{min-height:220px;resize:none;line-height:1.7;padding:14px}
-.save-btn{background:var(--neon);color:#000;border:none;padding:12px 24px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:12px;font-size:14px;width:100%}
-/* Night modal */
-.overlay-modal{position:fixed;inset:0;background:rgba(0,0,5,.97);z-index:200;display:none;flex-direction:column;padding:24px 20px;gap:14px;overflow-y:auto;max-width:480px;margin:0 auto}
-.overlay-modal.open{display:flex}
+.save-btn{background:var(--neon);color:#000;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:12px;font-size:14px;width:100%}
+.overlay{position:fixed;inset:0;background:rgba(0,0,5,.97);z-index:200;display:none;flex-direction:column;padding:24px 20px;gap:14px;overflow-y:auto;max-width:480px;margin:0 auto}
+.overlay.open{display:flex}
 .night-title{font-size:22px;font-weight:700;color:var(--neon);text-align:center}
 .vice-item{background:var(--bg2);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border)}
-.vice-left{display:flex;flex-direction:column;gap:3px}
-.vice-label{font-size:14px}
-.vice-penalty{font-size:11px;color:var(--red)}
+.v-left{display:flex;flex-direction:column;gap:3px}
 .toggle{width:46px;height:26px;border-radius:13px;background:var(--border);border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
 .toggle.on{background:var(--neon)}
 .toggle::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s}
 .toggle.on::after{left:23px}
-/* Create modal */
+.cal-modal{position:fixed;inset:0;background:rgba(0,0,5,.92);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;max-width:480px;margin:0 auto}
+.cal-modal.open{display:flex}
+.cal-inner{background:var(--bg2);border-radius:18px;padding:20px;width:100%;border:1px solid var(--border)}
+.cal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cal-nav{background:var(--bg3);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cdname{text-align:center;font-size:10px;color:var(--text2);padding:4px 0}
+.cday{text-align:center;padding:8px 2px;border-radius:8px;cursor:pointer;font-size:13px;border:1px solid transparent}
+.cday:hover:not(.empty){background:var(--bg3)}
+.cday.ctoday{border-color:rgba(0,212,255,.4)}
+.cday.csel{background:var(--neon);color:#000;font-weight:700}
+.cday.empty{cursor:default;opacity:0}
 .create-modal{position:fixed;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column;overflow-y:auto;max-width:480px;margin:0 auto}
 .create-modal.open{display:flex}
-.create-modal-inner{padding:20px;display:flex;flex-direction:column;gap:14px;padding-bottom:40px}
-.modal-header{display:flex;justify-content:space-between;align-items:center}
-.modal-title{font-size:18px;font-weight:700}
+.cmi{padding:20px;display:flex;flex-direction:column;gap:14px;padding-bottom:50px}
+.mhdr{display:flex;justify-content:space-between;align-items:center}
 .close-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
 .freq-grid{display:flex;flex-wrap:wrap;gap:7px}
-.freq-chip{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;transition:all .2s}
-.freq-chip.selected{background:rgba(0,212,255,.12);border-color:var(--neon);color:var(--neon)}
+.fchip{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:7px 14px;border-radius:20px;cursor:pointer;font-size:12px;transition:all .2s}
+.fchip.sel{background:rgba(0,212,255,.12);border-color:var(--neon);color:var(--neon)}
 .color-grid{display:flex;gap:10px;flex-wrap:wrap}
-.color-dot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .2s}
-.color-dot.selected{border-color:#fff;transform:scale(1.15)}
-/* Placeholder */
-.placeholder-section{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:60px 20px;color:var(--text2);text-align:center}
-.placeholder-icon{font-size:52px}
-/* Divider */
-.divider{border:none;border-top:1px solid var(--border);margin:4px 0}
+.cdot{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.cdot.sel{border-color:#fff;transform:scale(1.15)}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:60px 20px;color:var(--text2);text-align:center}
+.notif-bar{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:12px}
+.notif-bar button{background:var(--neon);color:#000;border:none;padding:6px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;white-space:nowrap;flex-shrink:0}
+hr.div{border:none;border-top:1px solid var(--border);margin:4px 0}
 </style>
 </head>
 <body>
 <div id="app">
-  <!-- ONBOARDING -->
   <div id="onboarding">
     <div class="onb-step active" id="step0">
-      <div style="height:20px"></div>
       <div class="onb-emoji">✨</div>
       <div class="onb-title">Bem-vindo ao AURA</div>
       <div class="onb-desc">Seu companheiro de organização de vida.<br>Construa hábitos, ganhe Aura, evolua como pessoa.</div>
@@ -149,79 +139,68 @@ textarea.input-field{min-height:220px;resize:none;line-height:1.7;padding:14px}
       <button class="btn-primary" onclick="nextStep()">Continuar →</button>
     </div>
     <div class="onb-step" id="step2">
-      <div class="onb-emoji">⚡</div>
-      <div class="onb-title">Sistema de Aura</div>
-      <div class="onb-desc">
-        A Aura é sua energia vital.<br><br>
-        <span style="color:var(--neon);font-weight:600">+Aura</span> ao completar tarefas e manter hábitos.<br><br>
-        <span style="color:var(--red);font-weight:600">−Aura</span> ao ceder a vícios ou falhar compromissos.<br><br>
-        Suba de nível. Evolua de verdade.
-      </div>
-      <button class="btn-primary" onclick="nextStep()">Entendido! →</button>
+      <div class="onb-emoji">🔔</div>
+      <div class="onb-title">Notificações</div>
+      <div class="onb-desc">Quer receber alarme de despertar e lembrete de check-in noturno?<br><br>O app enviará uma notificação no horário que você definiu.</div>
+      <button class="btn-primary" onclick="reqNotif()">Ativar notificações</button>
+      <button class="btn-secondary" onclick="nextStep()">Agora não</button>
     </div>
     <div class="onb-step" id="step3">
+      <div class="onb-emoji">⚡</div>
+      <div class="onb-title">Sistema de Aura</div>
+      <div class="onb-desc"><span style="color:var(--neon);font-weight:600">+Aura</span> ao completar tarefas e manter hábitos.<br><br><span style="color:var(--red);font-weight:600">−Aura</span> ao ceder a vícios ou falhar compromissos.<br><br>Suba de nível. Evolua de verdade.</div>
+      <button class="btn-primary" onclick="nextStep()">Entendido! →</button>
+    </div>
+    <div class="onb-step" id="step4">
       <div class="onb-emoji">🤝</div>
       <div class="onb-title">Contrato de Honestidade</div>
-      <div class="contract-box">
-        Eu, ao usar o AURA, comprometo-me a ser <strong>honesto comigo mesmo</strong>.<br><br>
-        Sei que ao mentir no check-in noturno, <strong>só estarei me enganando</strong>. O app não me pune — mas minha evolução real depende de dados reais.<br><br>
-        A Aura que construir aqui <strong>reflete quem eu realmente sou</strong>. Não quem eu finjo ser.
-      </div>
-      <button class="btn-primary" onclick="finishOnboarding()">Assinar e entrar ✨</button>
+      <div class="contract-box">Eu, ao usar o AURA, comprometo-me a ser <strong>honesto comigo mesmo</strong>.<br><br>Sei que ao mentir no check-in noturno, <strong>só estarei me enganando</strong>. O app não me pune — mas minha evolução real depende de dados reais.<br><br>A Aura que construir aqui <strong>reflete quem eu realmente sou</strong>.</div>
+      <button class="btn-primary" onclick="finishOnb()">Assinar e entrar ✨</button>
     </div>
   </div>
 
-  <!-- MAIN APP -->
-  <div id="main" style="display:none;flex:1;flex-direction:column;overflow:hidden">
+  <div id="main" style="display:none;flex:1;flex-direction:column;overflow:hidden;min-height:0">
     <div id="screen-hoje" class="screen active"></div>
     <div id="screen-habitos" class="screen"></div>
     <div id="screen-diario" class="screen"></div>
     <div id="screen-carteira" class="screen"></div>
     <div id="screen-pessoas" class="screen"></div>
-
-    <button class="fab" id="fab-btn" onclick="openCreateModal()">+</button>
-
+    <button class="fab" id="fab">+</button>
     <div class="bottom-bar">
-      <button class="tab active" onclick="switchTab('hoje',this)"><span class="tab-icon">✨</span>Hoje</button>
-      <button class="tab" onclick="switchTab('habitos',this)"><span class="tab-icon">📊</span>Hábitos</button>
-      <button class="tab" onclick="switchTab('diario',this)"><span class="tab-icon">📖</span>Diário</button>
-      <button class="tab" onclick="switchTab('carteira',this)"><span class="tab-icon">💰</span>Carteira</button>
-      <button class="tab" onclick="switchTab('pessoas',this)"><span class="tab-icon">👥</span>Pessoas</button>
+      <button class="tab active" id="tab-hoje" onclick="switchTab('hoje',this)"><span class="tab-icon">✨</span><span>Hoje</span></button>
+      <button class="tab" id="tab-habitos" onclick="switchTab('habitos',this)"><span class="tab-icon">📊</span><span>Hábitos</span></button>
+      <button class="tab" id="tab-diario" onclick="switchTab('diario',this)"><span class="tab-icon">📖</span><span>Diário</span></button>
+      <button class="tab" id="tab-carteira" onclick="switchTab('carteira',this)"><span class="tab-icon">💰</span><span>Carteira</span></button>
+      <button class="tab" id="tab-pessoas" onclick="switchTab('pessoas',this)"><span class="tab-icon">👥</span><span>Pessoas</span></button>
     </div>
   </div>
 
-  <!-- NIGHT CHECK-IN MODAL -->
-  <div class="overlay-modal" id="nightModal">
+  <!-- Night modal -->
+  <div class="overlay" id="nightModal">
     <div class="night-title">🌙 Painel de Sombras</div>
     <p style="text-align:center;color:var(--text2);font-size:13px">Check-in noturno — seja honesto consigo mesmo</p>
-    <div>
-      <label style="margin-bottom:8px">Como foi seu dia? (opcional)</label>
-      <textarea class="input-field" style="min-height:90px" id="nightDiary" placeholder="Escreva brevemente..."></textarea>
-    </div>
-    <p style="color:var(--text2);font-size:12px;margin-top:4px">Você cedeu a algum vício hoje?</p>
-    <div class="vice-item">
-      <div class="vice-left"><span class="vice-label">🚬 Fumou hoje?</span><span class="vice-penalty">−30 Aura se sim</span></div>
-      <button class="toggle" id="tv1" onclick="toggleVice(this,30)"></button>
-    </div>
-    <div class="vice-item">
-      <div class="vice-left"><span class="vice-label">🍺 Bebeu álcool?</span><span class="vice-penalty">−20 Aura se sim</span></div>
-      <button class="toggle" id="tv2" onclick="toggleVice(this,20)"></button>
-    </div>
-    <div class="vice-item">
-      <div class="vice-left"><span class="vice-label">🔞 Se masturbou?</span><span class="vice-penalty">−15 Aura se sim</span></div>
-      <button class="toggle" id="tv3" onclick="toggleVice(this,15)"></button>
-    </div>
+    <div><label style="margin-bottom:8px">Como foi seu dia?</label><textarea class="input-field" style="min-height:90px" id="nightDiary" placeholder="Escreva brevemente..."></textarea></div>
+    <p style="color:var(--text2);font-size:12px">Você cedeu a algum vício hoje?</p>
+    <div class="vice-item"><div class="v-left"><span>🚬 Fumou hoje?</span><span style="font-size:11px;color:var(--red)">−30 Aura</span></div><button class="toggle" onclick="toggleVice(this,30)"></button></div>
+    <div class="vice-item"><div class="v-left"><span>🍺 Bebeu álcool?</span><span style="font-size:11px;color:var(--red)">−20 Aura</span></div><button class="toggle" onclick="toggleVice(this,20)"></button></div>
+    <div class="vice-item"><div class="v-left"><span>🔞 Se masturbou?</span><span style="font-size:11px;color:var(--red)">−15 Aura</span></div><button class="toggle" onclick="toggleVice(this,15)"></button></div>
     <button class="btn-primary" onclick="closeNight()">Salvar e dormir bem 🌙</button>
-    <button class="btn-secondary" onclick="closeNight()">Fechar sem salvar</button>
+    <button class="btn-secondary" onclick="document.getElementById('nightModal').classList.remove('open')">Fechar</button>
   </div>
 
-  <!-- CREATE MODAL -->
+  <!-- Calendar modal -->
+  <div class="cal-modal" id="calModal">
+    <div class="cal-inner">
+      <div class="cal-hdr"><button class="cal-nav" onclick="calNav(-1)">‹</button><span id="calLabel" style="font-size:16px;font-weight:600"></span><button class="cal-nav" onclick="calNav(1)">›</button></div>
+      <div class="cal-grid" id="calGrid"></div>
+      <button class="btn-secondary" style="margin-top:14px;font-size:13px" onclick="document.getElementById('calModal').classList.remove('open')">Fechar</button>
+    </div>
+  </div>
+
+  <!-- Create modal -->
   <div class="create-modal" id="createModal">
-    <div class="create-modal-inner">
-      <div class="modal-header">
-        <span class="modal-title" id="modalTitle">Novo item</span>
-        <button class="close-btn" onclick="closeCreateModal()">×</button>
-      </div>
+    <div class="cmi">
+      <div class="mhdr"><span id="modalTitle" style="font-size:18px;font-weight:700"></span><button class="close-btn" onclick="closeCreate()">×</button></div>
       <div id="modalContent"></div>
     </div>
   </div>
@@ -229,359 +208,311 @@ textarea.input-field{min-height:220px;resize:none;line-height:1.7;padding:14px}
 
 <script>
 const COLORS=['#00d4ff','#ff4da6','#7c3aed','#22c55e','#f59e0b','#ef4444','#06b6d4','#f97316'];
-let selectedColor=COLORS[0];
+const WD=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const MN=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+let selColor=COLORS[0];
+let calView=new Date();
+let curTab='hoje';
 
-const defaultState={
-  aura:350,level:1,
-  wakeTime:'06:30',sleepTime:'23:00',
-  categories:[
-    {id:1,name:'Saúde',color:'#22c55e',emoji:'💪',habits:[
-      {id:101,name:'Beber 2L de água',type:'habito',time:'08:00',auraReward:20,freq:'Todos os dias',emoji:'💧'},
-      {id:102,name:'Exercitar 30min',type:'habito',time:'07:00',auraReward:30,freq:'Todos os dias',emoji:'🏃'},
-    ]},
-    {id:2,name:'Mente',color:'#7c3aed',emoji:'🧠',habits:[
-      {id:103,name:'Meditar 10min',type:'habito',time:'06:45',auraReward:25,freq:'Todos os dias',emoji:'🧘'},
-      {id:104,name:'Ler 20 páginas',type:'tarefa_recorrente',time:'21:00',auraReward:15,freq:'Todos os dias',emoji:'📚'},
-    ]}
-  ],
-  completedToday:{},
-  diaryEntries:{},
-  selectedDate:new Date().toDateString(),
-  onboardingDone:false
-};
+const DEF={aura:0,level:1,wakeTime:'06:30',sleepTime:'23:00',notif:false,categories:[],taskStates:{},diaryEntries:{},selectedDate:new Date().toDateString(),done:false};
+let S;
+try{const r=localStorage.getItem('aura_v3');S=r?JSON.parse(r):JSON.parse(JSON.stringify(DEF));}
+catch(e){S=JSON.parse(JSON.stringify(DEF));}
+if(!S.categories)S.categories=[];
+if(!S.taskStates)S.taskStates={};
 
-let state;
-try{
-  const raw=localStorage.getItem('aura_v1');
-  state=raw?JSON.parse(raw):JSON.parse(JSON.stringify(defaultState));
-}catch(e){state=JSON.parse(JSON.stringify(defaultState));}
+function sv(){try{localStorage.setItem('aura_v3',JSON.stringify(S));}catch(e){}}
 
-function save(){try{localStorage.setItem('aura_v1',JSON.stringify(state));}catch(e){}}
+// Notifications
+function reqNotif(){
+  if('Notification' in window){
+    Notification.requestPermission().then(p=>{S.notif=(p==='granted');sv();if(p==='granted')startAlarm();});
+  }
+  nextStep();
+}
+let alarmTick=null;
+function startAlarm(){
+  if(alarmTick)clearInterval(alarmTick);
+  alarmTick=setInterval(()=>{
+    if(!S.notif)return;
+    const now=new Date();
+    const hm=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    const sec=now.getSeconds();
+    if(hm===S.wakeTime&&sec<30)sendNotif('☀️ Bom dia!','Hora de acordar. Seu dia começa agora ⚡');
+    if(hm===S.sleepTime&&sec<30){
+      sendNotif('🌙 Check-in','Abra o Painel de Sombras antes de dormir.');
+      if(document.getElementById('main').style.display!=='none')
+        setTimeout(()=>document.getElementById('nightModal').classList.add('open'),800);
+    }
+  },20000);
+}
+function sendNotif(t,b){if(Notification.permission==='granted')new Notification(t,{body:b});}
+if(S.notif)startAlarm();
 
-// ONBOARDING
+// Onboarding
 let onbStep=0;
 function nextStep(){
   document.getElementById('step'+onbStep).classList.remove('active');
   onbStep++;
-  document.getElementById('step'+onbStep).classList.add('active');
+  if(document.getElementById('step'+onbStep))document.getElementById('step'+onbStep).classList.add('active');
 }
-function finishOnboarding(){
-  state.wakeTime=document.getElementById('wakeTime').value||'06:30';
-  state.sleepTime=document.getElementById('sleepTime').value||'23:00';
-  state.onboardingDone=true;
-  save();
+function finishOnb(){
+  S.wakeTime=document.getElementById('wakeTime')?.value||'06:30';
+  S.sleepTime=document.getElementById('sleepTime')?.value||'23:00';
+  S.done=true;sv();
   document.getElementById('onboarding').style.display='none';
-  const main=document.getElementById('main');
-  main.style.display='flex';
+  document.getElementById('main').style.display='flex';
   renderAll();
+  if(S.notif)startAlarm();
 }
-if(state.onboardingDone){
+if(S.done){
   document.getElementById('onboarding').style.display='none';
-  const main=document.getElementById('main');
-  main.style.display='flex';
+  document.getElementById('main').style.display='flex';
+  document.getElementById('fab').onclick=openCreate;
   renderAll();
+} else {
+  document.getElementById('fab').onclick=openCreate;
 }
 
-// TABS
+// Tabs
 function switchTab(name,el){
+  curTab=name;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
   el.classList.add('active');
-  document.getElementById('fab-btn').style.display=(name==='hoje'||name==='habitos')?'flex':'none';
+  document.getElementById('fab').style.display=(name==='hoje'||name==='habitos')?'flex':'none';
   if(name==='hoje')renderHoje();
   else if(name==='habitos')renderHabitos();
   else if(name==='diario')renderDiario();
-  else if(name==='carteira')renderPlaceholder('carteira','💰','Em breve','Módulo de finanças chegando em breve.');
-  else if(name==='pessoas')renderPlaceholder('pessoas','👥','Em breve','Módulo de contatos e CRM pessoal em desenvolvimento.');
+  else renderPlaceholder(name,name==='carteira'?'💰':'👥',name==='carteira'?'Carteira':'Pessoas','Em breve...');
 }
 
-// LEVEL
-function getLevelInfo(){
+// Level
+function lvlInfo(){
   const th=[0,100,250,450,700,1000,1400,1900,2500,3200,4000];
-  let lvl=1;
-  for(let i=th.length-1;i>=0;i--){if(state.aura>=th[i]){lvl=i+1;break;}}
-  lvl=Math.min(lvl,th.length-1);
-  const cur=th[lvl-1]||0,next=th[lvl]||th[th.length-1];
-  const pct=Math.min(100,Math.round(((state.aura-cur)/(next-cur))*100));
-  return{level:lvl,pct,aura:state.aura,next};
+  let lv=1;for(let i=th.length-1;i>=0;i--){if(S.aura>=th[i]){lv=i+1;break;}}
+  lv=Math.min(lv,th.length-1);
+  const c=th[lv-1]||0,n=th[lv]||4000;
+  return{lv,pct:Math.min(100,Math.round(((S.aura-c)/(n-c))*100)),aura:S.aura};
 }
 
-// WEEK
-function getWeekDays(){
-  const today=new Date();
-  const names=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  const days=[];
-  for(let i=-3;i<=3;i++){
-    const d=new Date(today);d.setDate(today.getDate()+i);
-    days.push({name:names[d.getDay()],num:d.getDate(),date:d.toDateString(),isToday:i===0});
-  }
-  return days;
+// Week days
+function weekDays(center){
+  const d=center?new Date(center):new Date();
+  const today=new Date().toDateString();
+  return Array.from({length:7},(_,i)=>{
+    const x=new Date(d);x.setDate(d.getDate()+i-3);
+    return{name:WD[x.getDay()],num:x.getDate(),date:x.toDateString(),isToday:x.toDateString()===today};
+  });
 }
 
-// HOJE
+// Tasks
+function allTasks(){
+  const a=[];
+  S.categories.forEach(c=>c.habits.forEach(h=>a.push({...h,catName:c.name,catColor:c.color})));
+  return a.sort((a,b)=>(a.time||'00:00').localeCompare(b.time||'00:00'));
+}
+
+// Render Hoje
 function renderHoje(){
-  const li=getLevelInfo();
-  const days=getWeekDays();
-  const dateKey=state.selectedDate;
-  const tasks=getAllTasksSorted();
-  const completed=state.completedToday[dateKey]||{};
+  const li=lvlInfo();
+  const dk=S.selectedDate;
+  const days=weekDays(new Date(dk));
+  const tasks=allTasks();
+  const ts=S.taskStates[dk]||{};
+  const notifBar=(!S.notif&&'Notification' in window)?`<div class="notif-bar">🔔<span style="flex:1;color:var(--text2)">Ative notificações para alarmes de despertar e dormir.</span><button onclick="askNotif()">Ativar</button></div>`:'';
+  const weekHtml=days.map(d=>`<div class="day-chip${d.isToday?' today':''}${d.date===dk?' selected':''}" onclick="selDay('${d.date}')"><div class="dname">${d.name}</div><div class="dnum">${d.num}</div></div>`).join('');
+  const dl=new Date(dk).toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  const done=Object.values(ts).filter(v=>v==='done').length;
 
-  const weekHtml=days.map(d=>{
-    const sel=d.date===dateKey;
-    return`<div class="day-chip${d.isToday?' today':''}${sel?' selected':''}" onclick="selectDay('${d.date}')">
-      <div class="dname">${d.name}</div>
-      <div class="dnum">${d.num}</div>
-    </div>`;
-  }).join('');
-
-  const tasksHtml=tasks.length===0
-    ?`<div style="color:var(--text2);text-align:center;padding:40px 20px;font-size:13px">Nenhuma tarefa para hoje.<br>Toque no <strong style="color:var(--neon)">+</strong> para adicionar! 🎉</div>`
-    :tasks.map(t=>{
-      const done=!!completed[t.id];
-      return`<div class="task-item${done?' done':''}" onclick="toggleTask(${t.id},'${dateKey}')">
-        <div class="task-check${done?' checked':''}">${done?'✓':''}</div>
+  let tasksHtml='';
+  if(!tasks.length){
+    tasksHtml=`<div class="empty-state"><div style="font-size:48px">📋</div><div style="font-size:15px;font-weight:600;color:var(--text)">Nenhuma tarefa ainda</div><div style="font-size:13px">Vá em Hábitos, crie uma categoria e adicione seus hábitos. Eles aparecerão aqui!</div></div>`;
+  } else {
+    tasksHtml=tasks.map(t=>{
+      const st=ts[t.id]||'open';
+      return`<div class="task-item${st==='done'?' done':''}${st==='migrated'?' migrated':''}">
+        <div class="bujo-group">
+          <div class="bsym${st==='open'?'':''}" title="Aberta" onclick="setSt(${t.id},'${dk}','open')">[ ]</div>
+          <div class="bsym${st==='done'?' s-done':''}" title="Feita" onclick="setSt(${t.id},'${dk}','done')">[x]</div>
+          <div class="bsym${st==='migrated'?' s-migrated':''}" title="Migrada" onclick="setSt(${t.id},'${dk}','migrated')">[>]</div>
+          <div class="bsym${st==='note'?' s-note':''}" title="Nota" onclick="setSt(${t.id},'${dk}','note')">[-]</div>
+        </div>
         <div class="task-info">
           <div class="task-name">${t.emoji} ${t.name}</div>
           <div class="task-meta">${t.time} · ${t.catName}</div>
+          <div class="task-aura">+${t.auraReward} aura</div>
         </div>
-        <div class="task-aura-badge">+${t.auraReward}</div>
       </div>`;
     }).join('');
-
-  const completedCount=Object.values(completed).filter(Boolean).length;
-  const total=tasks.length;
+  }
 
   document.getElementById('screen-hoje').innerHTML=`
+    ${notifBar}
     <div class="aura-header">
-      <div class="aura-top">
-        <span class="aura-title">⚡ AURA — ${li.aura} pts</span>
-        <span class="level-badge">LVL ${li.level}</span>
-      </div>
-      <div class="aura-bar-bg"><div class="aura-bar-fill" id="auraBarFill" style="width:${li.pct}%"></div></div>
+      <div class="aura-top"><span class="aura-title">⚡ AURA — ${li.aura} pts</span><span class="level-badge">LVL ${li.lv}</span></div>
+      <div class="aura-bar-bg"><div class="aura-bar-fill" style="width:${li.pct}%"></div></div>
       <div class="aura-points">${li.pct}% para o próximo nível</div>
     </div>
-    <div class="week-strip" id="weekStrip">${weekHtml}</div>
+    <div class="week-nav">
+      <div class="week-strip">${weekHtml}</div>
+      <button class="cal-btn" onclick="openCal()">📅</button>
+    </div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:12px;font-style:italic">${dl}</div>
+    <div class="bujo-legend">
+      <div class="li"><span class="ls" style="color:var(--text2)">[ ]</span><span>Aberta</span></div>
+      <div class="li"><span class="ls" style="color:var(--neon)">[x]</span><span>Feita</span></div>
+      <div class="li"><span class="ls" style="color:#ffc800">[>]</span><span>Migrada</span></div>
+      <div class="li"><span class="ls" style="color:var(--text2)">[-]</span><span>Nota</span></div>
+    </div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <div class="section-title" style="margin-bottom:0">Tarefas do dia</div>
-      <span style="font-size:11px;color:var(--text2)">${completedCount}/${total} concluídas</span>
+      ${tasks.length?`<span style="font-size:11px;color:var(--text2)">${done}/${tasks.length} feitas</span>`:''}
     </div>
     ${tasksHtml}
     <div style="height:16px"></div>
-    <button class="btn-secondary" style="font-size:13px" onclick="openNightCheck()">🌙 Check-in noturno</button>
+    <button class="btn-secondary" style="font-size:13px" onclick="openNight()">🌙 Check-in noturno</button>
   `;
 }
 
-function getAllTasksSorted(){
-  const all=[];
-  state.categories.forEach(cat=>{
-    cat.habits.forEach(h=>{
-      all.push({...h,catName:cat.name,catColor:cat.color});
-    });
-  });
-  return all.sort((a,b)=>(a.time||'00:00').localeCompare(b.time||'00:00'));
+function setSt(id,dk,nst){
+  if(!S.taskStates[dk])S.taskStates[dk]={};
+  const prev=S.taskStates[dk][id]||'open';
+  S.taskStates[dk][id]=nst;
+  const t=allTasks().find(x=>x.id===id);
+  const r=t?t.auraReward:10;
+  if(prev!=='done'&&nst==='done'){S.aura+=r;flash('+'+r+' Aura ⚡');}
+  else if(prev==='done'&&nst!=='done')S.aura=Math.max(0,S.aura-r);
+  sv();renderHoje();
 }
+function selDay(ds){S.selectedDate=ds;sv();renderHoje();}
+function askNotif(){Notification.requestPermission().then(p=>{S.notif=(p==='granted');sv();if(p==='granted'){startAlarm();renderHoje();}});}
 
-function selectDay(dateStr){
-  state.selectedDate=dateStr;save();renderHoje();
+// Calendar
+function openCal(){calView=new Date(S.selectedDate);renderCal();document.getElementById('calModal').classList.add('open');}
+function calNav(d){calView.setMonth(calView.getMonth()+d);renderCal();}
+function renderCal(){
+  const y=calView.getFullYear(),m=calView.getMonth();
+  document.getElementById('calLabel').textContent=MN[m]+' '+y;
+  const fd=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+  const today=new Date().toDateString(),sel=S.selectedDate;
+  let h=WD.map(d=>`<div class="cdname">${d[0]}</div>`).join('');
+  for(let i=0;i<fd;i++)h+=`<div class="cday empty"></div>`;
+  for(let d=1;d<=dim;d++){
+    const ds=new Date(y,m,d).toDateString();
+    h+=`<div class="cday${ds===today?' ctoday':''}${ds===sel?' csel':''}" onclick="calSel('${ds}')">${d}</div>`;
+  }
+  document.getElementById('calGrid').innerHTML=h;
 }
+function calSel(ds){S.selectedDate=ds;sv();document.getElementById('calModal').classList.remove('open');renderHoje();}
 
-function toggleTask(taskId,dateKey){
-  if(!state.completedToday[dateKey])state.completedToday[dateKey]={};
-  const wasDone=state.completedToday[dateKey][taskId];
-  state.completedToday[dateKey][taskId]=!wasDone;
-  const task=getAllTasksSorted().find(t=>t.id===taskId);
-  const reward=task?task.auraReward:10;
-  state.aura=Math.max(0,state.aura+(wasDone?-reward:reward));
-  save();
-  if(!wasDone)showFlash('+'+reward+' Aura ⚡');
-  renderHoje();
-}
-
-function showFlash(msg){
-  const el=document.createElement('div');
-  el.className='aura-flash';el.textContent=msg;
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(),1000);
-}
-
-// HABITOS
+// Habitos
 function renderHabitos(){
-  let html='';
-  state.categories.forEach(cat=>{
-    const rows=cat.habits.map(h=>`
-      <div class="habit-row">
-        <span>${h.emoji} ${h.name}</span>
-        <span class="habit-type-badge">${h.type==='habito'?'Hábito':h.type==='tarefa_recorrente'?'Recorrente':'Única'}</span>
-      </div>`).join('');
-    html+=`<div class="cat-card">
-      <div class="cat-header">
-        <div class="cat-dot" style="background:${cat.color}"></div>
-        <span style="font-size:16px">${cat.emoji}</span>
-        <span class="cat-name-text">${cat.name}</span>
-      </div>
-      ${rows||'<div style="color:var(--text2);font-size:12px;padding:4px 0">Nenhum item. Use o + para adicionar.</div>'}
-    </div>`;
+  let h='';
+  S.categories.forEach((cat,ci)=>{
+    const rows=cat.habits.map((hb,hi)=>`<div class="habit-row"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">${hb.emoji} ${hb.name}</span><div style="display:flex;align-items:center;gap:6px;flex-shrink:0"><span class="hbadge">${hb.type==='habito'?'Hábito':hb.type==='tarefa_recorrente'?'Recorrente':'Única'}</span><button class="btn-del" onclick="delHabit(${ci},${hi})">✕</button></div></div>`).join('');
+    h+=`<div class="cat-card"><div class="cat-hdr"><div class="cat-hdr-l"><div class="cat-dot" style="background:${cat.color}"></div><span style="font-size:16px">${cat.emoji}</span><span style="font-weight:600;font-size:15px">${cat.name}</span></div><button class="btn-del" onclick="delCat(${ci})">Excluir</button></div>${rows||'<div style="color:var(--text2);font-size:12px;padding:4px 0">Nenhum item. Use o + para adicionar.</div>'}</div>`;
   });
-  if(!html)html=`<div class="placeholder-section"><div class="placeholder-icon">📂</div><div>Nenhuma categoria ainda</div><div style="font-size:13px">Toque no + para criar sua primeira categoria!</div></div>`;
-  document.getElementById('screen-habitos').innerHTML=`<div class="section-title">Minhas categorias</div>${html}`;
+  if(!h)h=`<div class="empty-state"><div style="font-size:48px">📂</div><div style="font-size:15px;font-weight:600;color:var(--text)">Nenhuma categoria ainda</div><div style="font-size:13px">Toque no <strong style="color:var(--neon)">+</strong> para criar sua primeira categoria!</div></div>`;
+  document.getElementById('screen-habitos').innerHTML=`<div class="section-title">Minhas categorias</div>${h}`;
 }
+function delCat(i){if(!confirm('Excluir esta categoria e todos os itens?'))return;S.categories.splice(i,1);sv();renderHabitos();}
+function delHabit(ci,hi){S.categories[ci].habits.splice(hi,1);sv();renderHabitos();}
 
-// DIÁRIO
+// Diario
 function renderDiario(){
   const today=new Date();
-  const dateLabel=today.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
-  const dateKey=today.toDateString();
-  const saved=state.diaryEntries[dateKey]||'';
-  document.getElementById('screen-diario').innerHTML=`
-    <div class="diary-hint">📖 Escrever 5 minutos por dia sobre seu dia reduz o estresse, melhora a clareza mental e fortalece o autoconhecimento. Cada entrada vale +5 Aura.</div>
-    <div class="diary-date-title">${dateLabel}</div>
-    <textarea class="input-field" id="diaryText" placeholder="Como foi seu dia? O que você aprendeu? O que pode melhorar amanhã?">${saved}</textarea>
-    <button class="save-btn" onclick="saveDiary()">💾 Salvar entrada</button>
-  `;
+  const dl=today.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  const dk=today.toDateString();
+  const saved=S.diaryEntries[dk]||'';
+  document.getElementById('screen-diario').innerHTML=`<div class="diary-hint">📖 Escrever 5 minutos por dia reduz o estresse e melhora o autoconhecimento. Cada nova entrada vale +5 Aura.</div><div style="font-size:17px;font-weight:600;margin-bottom:12px">${dl}</div><textarea class="input-field" id="diaryText" placeholder="Como foi seu dia? O que você aprendeu? O que melhorar amanhã?">${saved}</textarea><button class="save-btn" onclick="saveDiary()">💾 Salvar entrada</button>`;
 }
-
 function saveDiary(){
-  const dateKey=new Date().toDateString();
-  const txt=document.getElementById('diaryText').value;
-  const isNew=!state.diaryEntries[dateKey];
-  state.diaryEntries[dateKey]=txt;
-  if(isNew&&txt.trim()){state.aura+=5;showFlash('+5 Aura ✍️');}
-  save();
+  const dk=new Date().toDateString(),txt=document.getElementById('diaryText').value;
+  const isNew=!S.diaryEntries[dk];
+  S.diaryEntries[dk]=txt;
+  if(isNew&&txt.trim()){S.aura+=5;flash('+5 Aura ✍️');}
+  sv();
 }
+function renderPlaceholder(id,icon,t,d){document.getElementById('screen-'+id).innerHTML=`<div class="empty-state"><div style="font-size:48px">${icon}</div><div style="font-size:18px;font-weight:600;color:var(--text)">${t}</div><div style="font-size:13px;line-height:1.7">${d}</div></div>`;}
 
-function renderPlaceholder(id,icon,title,desc){
-  document.getElementById('screen-'+id).innerHTML=`
-    <div class="placeholder-section">
-      <div class="placeholder-icon">${icon}</div>
-      <div style="font-size:18px;font-weight:600;color:var(--text)">${title}</div>
-      <div style="font-size:13px;line-height:1.7">${desc}</div>
-    </div>`;
-}
+// Flash
+function flash(msg){const e=document.createElement('div');e.className='aura-flash';e.textContent=msg;document.body.appendChild(e);setTimeout(()=>e.remove(),1000);}
 
-// NIGHT CHECK-IN
-function openNightCheck(){
-  document.querySelectorAll('.toggle').forEach(t=>t.classList.remove('on'));
-  document.getElementById('nightDiary').value='';
-  document.getElementById('nightModal').classList.add('open');
-}
-function toggleVice(el,penalty){
-  const wasOn=el.classList.contains('on');
-  el.classList.toggle('on');
-  state.aura=Math.max(0,state.aura+(wasOn?penalty:-penalty));
-  save();
-}
-function closeNight(){
-  const diary=document.getElementById('nightDiary').value;
-  if(diary.trim()){state.diaryEntries[new Date().toDateString()+'_night']=diary;}
-  save();
-  document.getElementById('nightModal').classList.remove('open');
-  renderHoje();
-}
+// Night
+function openNight(){document.querySelectorAll('.toggle').forEach(t=>t.classList.remove('on'));document.getElementById('nightDiary').value='';document.getElementById('nightModal').classList.add('open');}
+function toggleVice(el,p){const w=el.classList.contains('on');el.classList.toggle('on');S.aura=Math.max(0,S.aura+(w?p:-p));sv();}
+function closeNight(){const d=document.getElementById('nightDiary').value;if(d.trim())S.diaryEntries[new Date().toDateString()+'_night']=d;sv();document.getElementById('nightModal').classList.remove('open');renderHoje();}
 
-// CREATE MODAL
-function openCreateModal(){
-  const activeTab=document.querySelector('.tab.active').textContent.trim();
-  const isHabits=activeTab.includes('Hábito')||activeTab.includes('abito');
-  document.getElementById('modalTitle').textContent=isHabits?'Criar categoria / hábito':'Nova tarefa';
-  document.getElementById('modalContent').innerHTML=buildCreateForm(isHabits);
+// Create
+function openCreate(){
+  const isH=curTab==='habitos';
+  document.getElementById('modalTitle').textContent=isH?'Criar categoria / hábito':'Nova tarefa';
+  document.getElementById('modalContent').innerHTML=buildForm(isH);
   document.getElementById('createModal').classList.add('open');
 }
-function closeCreateModal(){document.getElementById('createModal').classList.remove('open');}
+function closeCreate(){document.getElementById('createModal').classList.remove('open');}
 
-function buildCreateForm(isHabits){
-  if(isHabits){
-    const catOpts=state.categories.map(c=>`<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
-    const colDots=COLORS.map(c=>`<div class="color-dot${c===selectedColor?' selected':''}" style="background:${c}" onclick="pickColor(this,'${c}')"></div>`).join('');
+function buildForm(isH){
+  const cOpts=S.categories.map(c=>`<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
+  const dots=COLORS.map(c=>`<div class="cdot${c===selColor?' sel':''}" style="background:${c}" onclick="pickCol(this,'${c}')"></div>`).join('');
+  const freqs=['Todos os dias','Seg a Sex','Dias da semana','Dias do mês','X vezes/semana','A cada X dias'];
+  if(isH){
     return`
-      <div style="background:var(--bg3);border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">Crie uma nova categoria ou adicione um item a uma existente.</div>
-      <div><label>Nome da nova categoria</label><input class="input-field" id="newCatName" placeholder="Ex: Estudo"></div>
-      <div><label>Emoji da categoria</label><input class="input-field" id="newCatEmoji" placeholder="📚" style="width:80px"></div>
-      <div><label>Cor</label><div class="color-grid" id="colorGrid">${colDots}</div></div>
-      <button class="btn-primary" onclick="createCategory()">Criar categoria</button>
-      <hr class="divider">
+      <div style="background:var(--bg3);border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">Crie uma nova categoria ou adicione itens a uma existente.</div>
+      <div><label>Nome da nova categoria</label><input class="input-field" id="catName" placeholder="Ex: Saúde"></div>
+      <div><label>Emoji</label><input class="input-field" id="catEmoji" placeholder="💪" style="width:90px"></div>
+      <div><label>Cor</label><div class="color-grid">${dots}</div></div>
+      <button class="btn-primary" onclick="createCat()">Criar categoria</button>
+      <hr class="div">
       <div style="font-size:14px;font-weight:600">Adicionar item a categoria existente</div>
-      ${catOpts?`
-      <div><label>Categoria</label><select class="input-field" id="selCat">${catOpts}</select></div>
-      <div><label>Nome</label><input class="input-field" id="newHabitName" placeholder="Ex: Meditar 10min"></div>
-      <div><label>Emoji</label><input class="input-field" id="newHabitEmoji" placeholder="🧘" style="width:80px"></div>
-      <div><label>Horário</label><input class="input-field" type="time" id="newHabitTime" value="08:00"></div>
-      <div><label>Tipo</label>
-        <select class="input-field" id="newHabitType">
-          <option value="habito">Hábito (com estatísticas)</option>
-          <option value="tarefa_recorrente">Tarefa recorrente</option>
-          <option value="tarefa_unica">Tarefa única</option>
-        </select>
-      </div>
-      <div><label>Frequência</label>
-        <div class="freq-grid">
-          ${['Todos os dias','Seg a Sex','Dias da semana','Dias do mês','X vezes/semana','A cada X dias'].map((f,i)=>`<div class="freq-chip${i===0?' selected':''}" onclick="pickFreq(this)">${f}</div>`).join('')}
-        </div>
-      </div>
-      <div><label>Aura por conclusão</label><input class="input-field" type="number" id="newHabitAura" value="20" min="5" max="200"></div>
+      ${cOpts?`
+      <div><label>Categoria</label><select class="input-field" id="selCat">${cOpts}</select></div>
+      <div><label>Nome do item</label><input class="input-field" id="hName" placeholder="Ex: Meditar 10min"></div>
+      <div><label>Emoji</label><input class="input-field" id="hEmoji" placeholder="🧘" style="width:90px"></div>
+      <div><label>Horário</label><input class="input-field" type="time" id="hTime" value="08:00"></div>
+      <div><label>Tipo</label><select class="input-field" id="hType"><option value="habito">Hábito</option><option value="tarefa_recorrente">Tarefa recorrente</option><option value="tarefa_unica">Tarefa única</option></select></div>
+      <div><label>Frequência</label><div class="freq-grid">${freqs.map((f,i)=>`<div class="fchip${i===0?' sel':''}" onclick="pickFreq(this)">${f}</div>`).join('')}</div></div>
+      <div><label>Aura por conclusão</label><input class="input-field" type="number" id="hAura" value="20" min="5" max="200"></div>
       <button class="btn-primary" onclick="createHabit()">Adicionar item</button>`
-      :`<div style="color:var(--text2);font-size:13px">Crie uma categoria primeiro.</div>`}
-    `;
+      :`<div style="color:var(--text2);font-size:13px;padding:8px 0">Crie uma categoria primeiro (acima).</div>`}`;
   }
-  const catOpts=state.categories.map(c=>`<option value="${c.id}">${c.emoji} ${c.name}</option>`).join('');
   return`
-    <div><label>Nome da tarefa</label><input class="input-field" id="ntName" placeholder="Ex: Reunião com equipe"></div>
-    <div><label>Emoji</label><input class="input-field" id="ntEmoji" placeholder="📌" style="width:80px"></div>
-    <div><label>Horário</label><input class="input-field" type="time" id="ntTime" value="09:00"></div>
-    ${catOpts?`<div><label>Categoria</label><select class="input-field" id="ntCat">${catOpts}</select></div>`:''}
-    <div><label>Aura por conclusão</label><input class="input-field" type="number" id="ntAura" value="15" min="5" max="200"></div>
-    <button class="btn-primary" onclick="createTask()">Criar tarefa</button>
-  `;
+    <div><label>Nome da tarefa</label><input class="input-field" id="tName" placeholder="Ex: Reunião com equipe"></div>
+    <div><label>Emoji</label><input class="input-field" id="tEmoji" placeholder="📌" style="width:90px"></div>
+    <div><label>Horário</label><input class="input-field" type="time" id="tTime" value="09:00"></div>
+    ${cOpts?`<div><label>Categoria</label><select class="input-field" id="tCat">${cOpts}</select></div><div><label>Aura por conclusão</label><input class="input-field" type="number" id="tAura" value="15" min="5" max="200"></div><button class="btn-primary" onclick="createTask()">Criar tarefa</button>`:'<div style="color:var(--text2);font-size:13px">Crie uma categoria em Hábitos primeiro.</div>'}`;
 }
 
-function pickColor(el,color){
-  document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('selected'));
-  el.classList.add('selected');selectedColor=color;
-}
-function pickFreq(el){
-  document.querySelectorAll('.freq-chip').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-}
+function pickCol(el,c){document.querySelectorAll('.cdot').forEach(d=>d.classList.remove('sel'));el.classList.add('sel');selColor=c;}
+function pickFreq(el){document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
 
-function createCategory(){
-  const name=(document.getElementById('newCatName').value||'').trim();
-  if(!name){alert('Digite um nome para a categoria.');return;}
-  state.categories.push({id:Date.now(),name,color:selectedColor,emoji:document.getElementById('newCatEmoji').value.trim()||'📁',habits:[]});
-  save();closeCreateModal();renderHabitos();
+function createCat(){
+  const name=(document.getElementById('catName').value||'').trim();
+  if(!name){alert('Digite um nome.');return;}
+  S.categories.push({id:Date.now(),name,color:selColor,emoji:document.getElementById('catEmoji').value.trim()||'📁',habits:[]});
+  sv();closeCreate();renderHabitos();
 }
 function createHabit(){
-  const name=(document.getElementById('newHabitName').value||'').trim();
+  const name=(document.getElementById('hName').value||'').trim();
   if(!name){alert('Digite um nome.');return;}
-  const catId=parseInt(document.getElementById('selCat').value);
-  const cat=state.categories.find(c=>c.id===catId);
+  const cat=S.categories.find(c=>c.id===parseInt(document.getElementById('selCat').value));
   if(!cat)return;
-  cat.habits.push({
-    id:Date.now(),name,
-    emoji:document.getElementById('newHabitEmoji').value.trim()||'⭐',
-    time:document.getElementById('newHabitTime').value||'08:00',
-    type:document.getElementById('newHabitType').value,
-    freq:document.querySelector('.freq-chip.selected')?.textContent||'Todos os dias',
-    auraReward:parseInt(document.getElementById('newHabitAura').value)||20
-  });
-  save();closeCreateModal();renderHabitos();
+  cat.habits.push({id:Date.now(),name,emoji:document.getElementById('hEmoji').value.trim()||'⭐',time:document.getElementById('hTime').value||'08:00',type:document.getElementById('hType').value,freq:document.querySelector('.fchip.sel')?.textContent||'Todos os dias',auraReward:parseInt(document.getElementById('hAura').value)||20});
+  sv();closeCreate();renderHabitos();
 }
 function createTask(){
-  const name=(document.getElementById('ntName').value||'').trim();
+  const name=(document.getElementById('tName').value||'').trim();
   if(!name){alert('Digite um nome.');return;}
-  const catId=document.getElementById('ntCat')?parseInt(document.getElementById('ntCat').value):null;
-  const cat=catId?state.categories.find(c=>c.id===catId):state.categories[0];
-  const task={
-    id:Date.now(),name,
-    emoji:document.getElementById('ntEmoji').value.trim()||'📌',
-    time:document.getElementById('ntTime').value||'09:00',
-    type:'tarefa_unica',freq:'once',
-    auraReward:parseInt(document.getElementById('ntAura').value)||15
-  };
-  if(cat)cat.habits.push(task);
-  save();closeCreateModal();renderHoje();
+  const cat=S.categories.find(c=>c.id===parseInt(document.getElementById('tCat').value));
+  if(!cat)return;
+  cat.habits.push({id:Date.now(),name,emoji:document.getElementById('tEmoji').value.trim()||'📌',time:document.getElementById('tTime').value||'09:00',type:'tarefa_unica',freq:'once',auraReward:parseInt(document.getElementById('tAura').value)||15});
+  sv();closeCreate();renderHoje();
 }
 
 function renderAll(){renderHoje();renderHabitos();}
+document.getElementById('fab').onclick=openCreate;
 </script>
 </body>
 </html>
